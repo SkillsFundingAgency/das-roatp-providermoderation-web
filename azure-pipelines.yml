@@ -6,7 +6,7 @@ trigger:
 
 variables:
 - name: SolutionBaseName
-  value: SFA.DAS.ProviderModeration.Web
+  value: SFA.DAS.Roatp.ProviderModeration.Web
 - name: BuildConfiguration
   value: release
 - name: BuildPlatform
