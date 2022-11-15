@@ -41,13 +41,13 @@
         "keyVaultCertificateName": {
             "type": "string"
         },
-        "sharedBackEndAppServicePlanName": {
+        "sharedFrontEndAppServicePlanName": {
             "type": "string"
         },
-        "sharedBackEndSubnetResourceId": {
+        "sharedFrontEndSubnetResourceId": {
             "type": "string"
         },
-        "backEndAccessRestrictions": {
+        "frontEndAccessRestrictions": {
             "type": "array"
         },
         "logAnalyticsSubscriptionId": {
@@ -145,13 +145,13 @@
                         "value": "[variables('appServiceName')]"
                     },
                     "appServicePlanName": {
-                        "value": "[parameters('sharedBackEndAppServicePlanName')]"
+                        "value": "[parameters('sharedFrontEndAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
                         "value": "[parameters('sharedEnvResourceGroup')]"
                     },
                     "subnetResourceId": {
-                        "value": "[parameters('sharedBackEndSubnetResourceId')]"
+                        "value": "[parameters('sharedFrontEndSubnetResourceId')]"
                     },
                     "appServiceAppSettings": {
                         "value": {
@@ -194,7 +194,7 @@
                         "value": "[reference(concat(variables('appServiceName'), '-app-service-certificate-', parameters('utcValue'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
-                        "value": "[parameters('backEndAccessRestrictions')]"
+                        "value": "[parameters('frontEndAccessRestrictions')]"
                     }
                 }
             },
