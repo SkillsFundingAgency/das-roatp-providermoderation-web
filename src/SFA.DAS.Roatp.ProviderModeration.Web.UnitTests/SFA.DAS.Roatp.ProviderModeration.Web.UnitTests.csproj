@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.ProviderModeration.Web\SFA.DAS.Roatp.ProviderModeration.Web.csproj" />
+    <ProjectReference Include="..\SFA.DAS.Roatp.ProviderModeration.Web\SFA.DAS.Roatp.ProviderModeration.Web.csproj" />
   </ItemGroup>
 
 </Project>
