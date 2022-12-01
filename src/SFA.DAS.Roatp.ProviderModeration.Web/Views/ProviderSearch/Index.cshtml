@@ -1,0 +1,32 @@
+﻿@model SFA.DAS.Roatp.ProviderModeration.Web.Models.ProviderSearchSubmitModel
+
+@{
+    ViewBag.Title = "Search for an apprenticeship training provider";
+    Layout = "_Layout";
+}
+
+<a asp-action="Index" asp-controller="Dashboard" class="govuk-back-link">Return to dashboard</a>
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <partial name="_validationSummary" />
+            <div class="govuk-caption-xl">Search for an apprenticeship training provider</div>
+            <h1 class="govuk-heading-xl">Search for an apprenticeship training provider</h1>
+
+            <form method="post" asp-action="Search" asp-controller="Search" enctype="multipart/form-data" novalidate>
+                <div esfa-validation-marker-for="UKPRN" class="govuk-form-group">
+                    <label class="govuk-label govuk-label--m" asp-for="UKPRN">
+                        UKPRN
+                    </label>
+                    <span asp-validation-for="UKPRN" class="govuk-error-message"></span>
+                    <input asp-for="UKPRN" id="Postcode" class="govuk-input govuk-input--width-10" type="text" maxlength="10">
+                </div>
+
+                <div class="govuk-button-group">
+                    <button id="submit" type="submit" class="govuk-button">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
