@@ -27,7 +27,7 @@ public static class Program
             .AddMediatR(applicationAssembly)
             .AddFluentValidation(new[] { applicationAssembly })
             .AddAuthentication(builder.Configuration)
-            .AddApplicationServices();
+            .AddServiceRegistrations(builder.Configuration);
 
         //Add services above
         var app = builder.Build();

@@ -1,8 +1,14 @@
 ﻿using MediatR;
 
-namespace SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
-
-public class GetProviderQuery : IRequest<GetProviderQueryResponse>
+namespace SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider
 {
-    public int Ukprn { get; init; }
+    public class GetProviderQuery : IRequest<GetProviderQueryResult>
+    {
+        public int Ukprn { get; }
+
+        public GetProviderQuery(int ukprn)
+        {
+            Ukprn = ukprn;
+        }
+    }
 }
