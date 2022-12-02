@@ -1,4 +1,5 @@
-﻿@model SFA.DAS.Roatp.ProviderModeration.Web.Models.ProviderSearchSubmitModel
+﻿@using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure
+@model SFA.DAS.Roatp.ProviderModeration.Web.Models.ProviderSearchSubmitModel
 
 @{
     ViewBag.Title = "Search for an apprenticeship training provider";
@@ -7,24 +8,22 @@
 
 <a asp-action="Index" asp-controller="Dashboard" class="govuk-back-link">Return to dashboard</a>
 
-<main class="govuk-main-wrapper " id="main-content" role="main">
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <partial name="_validationSummary" />
-            <h1 class="govuk-heading-xl">Search for an apprenticeship training provider</h1>
-            <form method="post" asp-action="Search" asp-controller="Search" enctype="multipart/form-data" novalidate>
-                <div esfa-validation-marker-for="UKPRN" class="govuk-form-group">
-                    <label class="govuk-label" asp-for="UKPRN">
-                        UKPRN
-                    </label>
-                    <span asp-validation-for="UKPRN" class="govuk-error-message"></span>
-                    <input asp-for="UKPRN" class="govuk-input govuk-input--width-20" type="text">
-                </div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_validationSummary" />
+        <h1 class="govuk-heading-xl">Search for an apprenticeship training provider</h1>
+        <form method="post" asp-controller="ProviderSearch" asp-action="GetProviderDescription" enctype="multipart/form-data" novalidate>
+            <div esfa-validation-marker-for="UKPRN" class="govuk-form-group">
+                <label class="govuk-label" asp-for="UKPRN">
+                    UKPRN
+                </label>
+                <span asp-validation-for="UKPRN" class="govuk-error-message"></span>
+                <input asp-for="UKPRN" class="govuk-input govuk-input--width-20" type="text">
+            </div>
 
-                <div class="govuk-button-group">
-                    <button id="submit" type="submit" class="govuk-button">Search</button>
-                </div>
-            </form>
-        </div>
+            <div class="govuk-button-group">
+                <button id="submit" type="submit" class="govuk-button">Search</button>
+            </div>
+        </form>
     </div>
-</main>
+</div>
