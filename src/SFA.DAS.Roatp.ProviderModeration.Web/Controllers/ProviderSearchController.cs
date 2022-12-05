@@ -24,7 +24,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         }
 
         [HttpPost]
-        //[Route("providers/{ukprn}/provider-description", Name = RouteNames.GetProviderDescription)]
+        [Route("providers/{ukprn}/provider-description", Name = RouteNames.GetProviderDescription)]
         public async Task<IActionResult> GetProviderDescription(ProviderSearchSubmitModel model)
         {
             _logger.LogInformation("Provider description gathering for {ukprn}", model.UKPRN);
@@ -34,7 +34,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                 return View("~/Views/ProviderSearch/Index.cshtml", model);
             }
 
-            var result = await _mediator.Send(new GetProviderQuery(model.UKPRN));
+            var result = await _mediator.Send(new GetProviderQuery(model.UKPRN.GetValueOrDefault()));
 
             return View("~/Views/ProviderSearch/Index.cshtml", model);
         }
