@@ -2,6 +2,6 @@
 {
     public class ProviderSearchSubmitModel
     {
-        public int? UKPRN { get; set; }
+        public int? Ukprn { get; set; }
     }
 }

@@ -6,19 +6,19 @@
     Layout = "_Layout";
 }
 
-<a asp-action="Index" asp-controller="Dashboard" class="govuk-back-link">Return to dashboard</a>
+<a asp-action="Dashboard" asp-controller="Home" class="govuk-back-link">Return to dashboard</a>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_validationSummary" />
         <h1 class="govuk-heading-xl">Search for an apprenticeship training provider</h1>
-        <form method="post" asp-route="@RouteNames.GetProviderDescription" enctype="multipart/form-data" novalidate data="@Model">
-            <div esfa-validation-marker-for="UKPRN" class="govuk-form-group">
-                <label class="govuk-label" asp-for="UKPRN">
+        <form method="post" asp-controller="ProviderSearch" asp-action="GetProviderDescription" enctype="multipart/form-data" novalidate data="@Model">
+            <div esfa-validation-marker-for="Ukprn" class="govuk-form-group">
+                <label class="govuk-label" asp-for="Ukprn">
                     UKPRN
                 </label>
-                <span asp-validation-for="UKPRN" class="govuk-error-message"></span>
-                <input asp-for="UKPRN" class="govuk-input govuk-input--width-20" type="text" maxlength="8">
+                <span asp-validation-for="Ukprn" class="govuk-error-message"></span>
+                <input asp-for="Ukprn" class="govuk-input govuk-input--width-20" type="number" maxlength="8">
             </div>
 
             <div class="govuk-button-group">

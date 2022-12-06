@@ -1,4 +1,5 @@
-﻿using SFA.DAS.Configuration.AzureTableStorage;
+﻿using Microsoft.Extensions.Options;
+using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
 using System.Diagnostics.CodeAnalysis;
 
@@ -21,8 +22,9 @@ public static class ConfigurationExtension
         return builder;
     }
 
-    public static void RegisterConfigurations(IServiceCollection services, IConfiguration configuration)
+    public static void RegisterConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<ApplicationConfiguration>(configuration.GetSection(nameof(ApplicationConfiguration)));
+        services.AddSingleton(cfg => cfg.GetService<IOptions<ApplicationConfiguration>>().Value);
     }
 }
