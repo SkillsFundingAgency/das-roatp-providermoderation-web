@@ -24,7 +24,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            return View("~/Views/ProviderSearch/Index.cshtml");
         }
 
         [HttpPost]
