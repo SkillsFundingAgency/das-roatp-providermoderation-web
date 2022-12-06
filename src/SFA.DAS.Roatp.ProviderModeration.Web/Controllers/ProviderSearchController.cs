@@ -47,7 +47,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                     return View("~/Views/ProviderSearch/Index.cshtml", model);
                 }
             }
-            catch(InvalidOperationException ex) 
+            catch (InvalidOperationException)
             {
                 _logger.LogError("Provider not found for ukprn {model.Ukprn}", model.Ukprn);
                 ModelState.AddModelError("ProviderSearch", ProviderNotAvailable);
