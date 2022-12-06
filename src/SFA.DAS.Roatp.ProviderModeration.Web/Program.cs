@@ -1,5 +1,6 @@
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using NLog.Web;
 using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
@@ -22,7 +23,9 @@ public static class Program
         builder.Services.Configure<RouteOptions>(o=>o.LowercaseUrls = true);
 
         builder.Services.AddControllersWithViews();
-
+        
+        builder.Services.RegisterConfigurations(builder.Configuration);
+        
         var applicationAssembly = typeof(GetProviderQuery).Assembly;
 
         builder.Services
@@ -61,7 +64,6 @@ public static class Program
             .UseRouting()
             .UseAuthentication()
             .UseAuthorization();
-
 
         app.UseEndpoints(endpoints =>
         {
