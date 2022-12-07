@@ -1,7 +1,9 @@
-﻿using System.Security.Claims;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Configuration
 {
+    [ExcludeFromCodeCoverage]
     public static class Roles
     {
         public const string RoleClaimType = "http://service/service";
