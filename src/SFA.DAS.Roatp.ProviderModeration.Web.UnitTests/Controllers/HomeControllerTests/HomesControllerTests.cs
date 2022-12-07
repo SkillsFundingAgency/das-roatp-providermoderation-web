@@ -1,47 +1,43 @@
 ﻿using FluentAssertions;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
-using SFA.DAS.Roatp.ProviderModeration.Domain.ApiModels;
 using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
 using SFA.DAS.Roatp.ProviderModeration.Web.Controllers;
+using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.HomeControllerTests
 {
     [TestFixture]
     public class HomeControllerTests
     {
-        private HomeController sut;
-        private Mock<IOptions<ApplicationConfiguration>> mockOptions;
-        private ApplicationConfiguration config;
+        private HomeController _sut;
+        private Mock<IOptions<ApplicationConfiguration>> _mockOptions;
+        private ApplicationConfiguration _config;
 
         [SetUp]
         public void Before_each_test()
         {
-            mockOptions = new Mock<IOptions<ApplicationConfiguration>>();
-            config = new ApplicationConfiguration() { EsfaAdminServicesBaseUrl = @"https://test.com" };
-            mockOptions.Setup(o => o.Value).Returns(config);
-            sut = new HomeController(mockOptions.Object);
+            _mockOptions = new Mock<IOptions<ApplicationConfiguration>>();
+            _config = new ApplicationConfiguration() { EsfaAdminServicesBaseUrl = @"https://test.com" };
+            _mockOptions.Setup(o => o.Value).Returns(_config);
+            _sut = new HomeController(_mockOptions.Object);
         }
 
         [Test]
-        public void Index_RedirectToAction()
+        public void Index_RedirectToGetProviderDescriptionRoute()
         {
-            var result = sut.Index() as RedirectToActionResult;
+            var result = _sut.Index() as RedirectToRouteResult;
 
             result.Should().NotBeNull();
-            result.ActionName.Should().Be("Index");
-            result.ControllerName.Should().Be("ProviderSearch");
+            result.RouteName.Should().Be(RouteNames.GetProviderDescription);
         }
 
         [Test]
         public void Dashboard_RedirectToAdminServicesBaseUrl()
         {
-            var result = sut.Dashboard() as RedirectResult;
+            var result = _sut.Dashboard() as RedirectResult;
 
             result.Should().NotBeNull();
             result.Url.Contains("/dashboard");

@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Domain.ApiModels;
-using SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
+using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
+using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
@@ -22,13 +23,14 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         }
 
         [HttpGet]
+        [Route("providers/provider-description", Name = RouteNames.GetProviderDescription)]
         public IActionResult Index()
         {
             return View("~/Views/ProviderSearch/Index.cshtml");
         }
 
         [HttpPost]
-        //[Route("providers/{ukprn}/provider-description", Name = RouteNames.GetProviderDescription)]
+        [Route("providers/provider-description", Name = RouteNames.PostProviderDescription)]
         public async Task<IActionResult> GetProviderDescription(ProviderSearchSubmitModel model)
         {
             _logger.LogInformation("Provider description gathering for {ukprn}", model.Ukprn);
