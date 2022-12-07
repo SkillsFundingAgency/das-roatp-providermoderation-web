@@ -5,7 +5,6 @@ using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers;
 
-//[Authorize(Roles = Roles.RoatpTribalTeam)]
 public class HomeController : Controller
 {
     private readonly ApplicationConfiguration _applicationConfiguration;
