@@ -32,8 +32,6 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
                 MarketingInfo = MarketingInfo,
                 ProviderType = ProviderType.MainProvider
             };
-
-
             _mediator = new Mock<IMediator>();
             _mediator.Setup(x => x.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => new GetProviderQueryResult
@@ -51,6 +49,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
             {
                 Ukprn = Ukprn
             };
+
             var result = await _controller.GetProviderDescription(model);
         
             var viewResult = result as ViewResult;
@@ -67,8 +66,6 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
                 MarketingInfo = MarketingInfo,
                 ProviderType = ProviderType.SupportingProvider
             };
-
-
             _mediator.Setup(x => x.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => new GetProviderQueryResult
                 {
@@ -81,6 +78,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
             {
                 Ukprn = Ukprn
             };
+
             var result = await _controller.GetProviderDescription(model);
 
             var viewResult = result as ViewResult;
@@ -106,6 +104,28 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
             viewResult.Model.Should().NotBeNull();
 
             _mediator.Verify(m => m.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Test]
+        public async Task ProviderController_GetProviderDescription_InvalidOperationExceptionWhenNoProvider()
+        {
+            _mediator.Setup(x => x.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()))
+                .ThrowsAsync(new InvalidOperationException());
+
+            _controller = new ProviderSearchController(_mediator.Object, _logger.Object);
+
+            var model = new ProviderSearchSubmitModel
+            {
+                Ukprn = Ukprn
+            };
+            var result = await _controller.GetProviderDescription(model);
+
+            var viewResult = result as ViewResult;
+            viewResult.Should().NotBeNull();
+            viewResult.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
+            viewResult.Model.Should().NotBeNull();
+
+            _mediator.Verify(m => m.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }
