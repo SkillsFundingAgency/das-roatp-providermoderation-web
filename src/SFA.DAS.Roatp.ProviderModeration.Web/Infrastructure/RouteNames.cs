@@ -6,5 +6,6 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure
     public static class RouteNames
     {
         public const string GetProviderDescription = "provider-description";
+        public const string PostProviderDescription = "provider-description";
     }
 }

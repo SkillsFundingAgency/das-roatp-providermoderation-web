@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
+using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers;
 
+//[Authorize(Roles = Roles.RoatpTribalTeam)]
 public class HomeController : Controller
 {
     private readonly ApplicationConfiguration _applicationConfiguration;
@@ -15,8 +17,9 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return RedirectToAction("Index", "ProviderSearch");
+        return RedirectToRoute(RouteNames.GetProviderDescription);
     }
+
 
     [Route("/Dashboard")]
     public IActionResult Dashboard()
