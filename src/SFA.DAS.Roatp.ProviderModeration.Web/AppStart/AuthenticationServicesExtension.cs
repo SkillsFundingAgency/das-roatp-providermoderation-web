@@ -25,6 +25,7 @@ public static class AuthenticationServicesExtension
             {
                 options.Wtrealm = authConfig.WtRealm;
                 options.MetadataAddress = authConfig.MetadataAddress;
+                options.CallbackPath = "/home";
                 options.TokenValidationParameters.RoleClaimType = Roles.RoleClaimType;
             })
             .AddCookie();
