@@ -31,7 +31,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.HomeControl
             var result = _sut.Index() as RedirectToRouteResult;
 
             result.Should().NotBeNull();
-            result.RouteName.Should().Be(RouteNames.GetProviderDescription);
+            result?.RouteName.Should().Be(RouteNames.GetProviderDescription);
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.HomeControl
             var result = _sut.Dashboard() as RedirectResult;
 
             result.Should().NotBeNull();
-            result.Url.Contains("/dashboard");
+            result?.Url.Contains("/dashboard");
         }
     }
 }
