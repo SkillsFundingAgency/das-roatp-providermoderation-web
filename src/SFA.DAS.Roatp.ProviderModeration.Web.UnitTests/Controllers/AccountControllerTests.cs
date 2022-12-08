@@ -30,8 +30,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers
             var result = _controller.SignIn() as ChallengeResult;
 
             Assert.That(result, Is.Not.Null);
-            CollectionAssert.IsNotEmpty(result.AuthenticationSchemes);
-            CollectionAssert.Contains(result.AuthenticationSchemes, WsFederationDefaults.AuthenticationScheme);
+            CollectionAssert.IsNotEmpty(result?.AuthenticationSchemes);
+            CollectionAssert.Contains(result?.AuthenticationSchemes, WsFederationDefaults.AuthenticationScheme);
         }
 
         [Test]
@@ -39,8 +39,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers
         {
             var result = _controller.PostSignIn() as RedirectToActionResult;
 
-            Assert.AreEqual("Home", result.ControllerName);
-            Assert.AreEqual("Index", result.ActionName);
+            Assert.AreEqual("Home", result?.ControllerName);
+            Assert.AreEqual("Index", result?.ActionName);
         }
 
         [Test]
@@ -49,9 +49,9 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers
             var result = _controller.SignOut() as SignOutResult;
 
             Assert.That(result, Is.Not.Null);
-            CollectionAssert.IsNotEmpty(result.AuthenticationSchemes);
-            CollectionAssert.Contains(result.AuthenticationSchemes, WsFederationDefaults.AuthenticationScheme);
-            CollectionAssert.Contains(result.AuthenticationSchemes, CookieAuthenticationDefaults.AuthenticationScheme);
+            CollectionAssert.IsNotEmpty(result?.AuthenticationSchemes);
+            CollectionAssert.Contains(result?.AuthenticationSchemes, WsFederationDefaults.AuthenticationScheme);
+            CollectionAssert.Contains(result?.AuthenticationSchemes, CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers
             var result = _controller.SignedOut() as ViewResult;
 
             Assert.That(result, Is.Not.Null);
-            Assert.AreEqual("SignedOut", result.ViewName);
+            Assert.AreEqual("SignedOut", result?.ViewName);
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers
             var result = _controller.AccessDenied() as ViewResult;
 
             Assert.That(result, Is.Not.Null);
-            Assert.AreEqual("AccessDenied", result.ViewName);
+            Assert.AreEqual("AccessDenied", result?.ViewName);
         }
     }
 }
