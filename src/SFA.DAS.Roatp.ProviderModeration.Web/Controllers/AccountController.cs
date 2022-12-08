@@ -35,7 +35,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult SignOut()
+        public new IActionResult SignOut()
         {
             var callbackUrl = Url.Action("SignedOut", "Account", values: null, protocol: Request.Scheme);
 
@@ -64,7 +64,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                 var userName = HttpContext.User.Identity.Name ?? HttpContext.User.FindFirstValue(ClaimTypes.Upn);
                 var roles = HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Role || c.Type == Roles.RoleClaimType).Select(c => c.Value);
 
-                _logger.LogError($"AccessDenied - User '{userName}' does not have a valid role. They have the following roles: '{string.Join(",", roles)}'");
+                _logger.LogError("AccessDenied - User '{userName}' does not have a valid role. They have the following roles: {roles}", userName, string.Join(",", roles));
             }
 
             return View("AccessDenied");
