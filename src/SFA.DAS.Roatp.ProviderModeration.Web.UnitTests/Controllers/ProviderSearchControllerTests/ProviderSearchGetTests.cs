@@ -33,8 +33,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
         
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
-            viewResult.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
-            viewResult.Model.Should().BeNull();
+            viewResult?.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
+            viewResult?.Model.Should().BeNull();
         }
     }
 }

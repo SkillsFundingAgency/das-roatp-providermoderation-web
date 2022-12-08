@@ -54,8 +54,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
         
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
-            viewResult.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
-            viewResult.Model.Should().NotBeNull();
+            viewResult?.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
+            viewResult?.Model.Should().NotBeNull();
         }
 
         [Test]
@@ -83,8 +83,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
 
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
-            viewResult.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
-            viewResult.Model.Should().NotBeNull();
+            viewResult?.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
+            viewResult?.Model.Should().NotBeNull();
         }
 
         [Test]
@@ -100,8 +100,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
 
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
-            viewResult.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
-            viewResult.Model.Should().NotBeNull();
+            viewResult?.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
+            viewResult?.Model.Should().NotBeNull();
 
             _mediator.Verify(m => m.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()), Times.Never);
         }
@@ -122,8 +122,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
 
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
-            viewResult.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
-            viewResult.Model.Should().NotBeNull();
+            viewResult?.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
+            viewResult?.Model.Should().NotBeNull();
 
             _mediator.Verify(m => m.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()), Times.Once);
         }
