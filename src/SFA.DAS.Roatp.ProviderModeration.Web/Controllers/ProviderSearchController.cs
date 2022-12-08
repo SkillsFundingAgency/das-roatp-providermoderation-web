@@ -9,7 +9,7 @@ using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
 {
-    [Authorize(Roles = Roles.RoatpTribalTeam)]
+    //[Authorize(Roles = Roles.RoatpTribalTeam)]
     public class ProviderSearchController : Controller
     {
         private readonly IMediator _mediator;
