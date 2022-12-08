@@ -58,12 +58,11 @@ public static class Program
             app.UseHsts();
         }
 
-        app
-            .UseHttpsRedirection()
-            .UseStaticFiles()
-            .UseRouting()
-            .UseAuthentication()
-            .UseAuthorization();
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+        app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
         {
