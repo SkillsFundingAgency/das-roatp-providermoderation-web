@@ -6,7 +6,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Configuration
     [ExcludeFromCodeCoverage]
     public static class Roles
     {
-        public const string RoleClaimType = "http://service/service";
+        public const string RoleClaimType = "https://service/service";
 
         public const string RoatpTribalTeam = "TAD";
 
