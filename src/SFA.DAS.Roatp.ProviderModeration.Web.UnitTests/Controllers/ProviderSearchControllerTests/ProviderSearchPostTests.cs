@@ -30,7 +30,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
             var provider = new GetProviderResponse
             {
                 MarketingInfo = MarketingInfo,
-                ProviderType = ProviderType.MainProvider
+                ProviderType = ProviderType.Main
             };
             _mediator = new Mock<IMediator>();
             _mediator.Setup(x => x.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()))
@@ -64,7 +64,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
             var provider = new GetProviderResponse
             {
                 MarketingInfo = MarketingInfo,
-                ProviderType = ProviderType.SupportingProvider
+                ProviderType = ProviderType.Supporting
             };
             _mediator.Setup(x => x.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => new GetProviderQueryResult
