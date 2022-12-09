@@ -8,7 +8,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.MockedObjects
         private const string GivenName = "Test";
         private const string Surname = "User";
         private const string Email = "Test.User@example.com";
-        private const string RoleClaimType = "https://service/service";
+        private const string RoleClaimType = "http://service/service";
 
         public static ClaimsPrincipal Setup(params string[] roles)
         {
