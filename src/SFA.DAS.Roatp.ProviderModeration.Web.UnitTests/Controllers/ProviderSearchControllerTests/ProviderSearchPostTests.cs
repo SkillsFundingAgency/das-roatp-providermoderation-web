@@ -27,7 +27,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
         public void Before_each_test()
         {
             _logger = new Mock<ILogger<ProviderSearchController>>();
-            var provider = new Provider
+            var provider = new GetProviderResponse
             {
                 MarketingInfo = MarketingInfo,
                 ProviderType = ProviderType.MainProvider
@@ -61,7 +61,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
         [Test]
         public async Task ProviderController_GetProviderDescription_ReturnsNonValidResponse()
         {
-            var provider = new Provider
+            var provider = new GetProviderResponse
             {
                 MarketingInfo = MarketingInfo,
                 ProviderType = ProviderType.SupportingProvider

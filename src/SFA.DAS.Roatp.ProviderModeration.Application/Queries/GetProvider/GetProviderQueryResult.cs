@@ -5,6 +5,6 @@ namespace SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider
 {
     public class GetProviderQueryResult
     {
-        public Provider Provider { get; set; }
+        public GetProviderResponse Provider { get; set; }
     }
 }

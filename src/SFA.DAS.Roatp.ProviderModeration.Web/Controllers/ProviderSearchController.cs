@@ -41,13 +41,15 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             }
             try
             {
-                var providerResult = await _mediator.Send(new GetProviderQuery(model.Ukprn.GetValueOrDefault()));
+                var providerSearchResult = await _mediator.Send(new GetProviderQuery(model.Ukprn.GetValueOrDefault()));
 
-                if (providerResult != null && providerResult.Provider.ProviderType != ProviderType.MainProvider)
+                if (providerSearchResult != null && providerSearchResult.Provider.ProviderType != ProviderType.Main)
                 {
                     ModelState.AddModelError("ProviderNotMainProvider", ProviderNotMainProvider);
                     return View("~/Views/ProviderSearch/Index.cshtml", model);
                 }
+                return View("~/Views/ProviderSearch/SearchResults.cshtml", (ProviderSearchResultViewModel)providerSearchResult);
+
             }
             catch (InvalidOperationException)
             {
@@ -55,7 +57,6 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                 ModelState.AddModelError("ProviderSearch", ProviderNotAvailable);
                 return View("~/Views/ProviderSearch/Index.cshtml", model);
             }
-            return View("~/Views/ProviderSearch/Index.cshtml", model);
         }
     }
 }
