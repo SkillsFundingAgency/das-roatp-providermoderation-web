@@ -21,6 +21,7 @@
                     <dd class="govuk-summary-list__value">
                         @Html.Raw(Model.LegalName)
                     </dd>
+                    <dd class="govuk-summary-list__actions" ></dd>
                 </div>
 
                 <div class="govuk-summary-list__row">
@@ -30,6 +31,7 @@
                     <dd class="govuk-summary-list__value">
                         @Html.Raw(Model.Ukprn)
                     </dd>
+                    <dd class="govuk-summary-list__actions" ></dd>
                 </div>
 
                 <div class="govuk-summary-list__row">
@@ -39,6 +41,7 @@
                     <dd class="govuk-summary-list__value">
                         @Html.ToProviderStatus(Model)
                     </dd>
+                    <dd class="govuk-summary-list__actions" ></dd>
                 </div>
 
                 <div class="govuk-summary-list__row">
@@ -48,6 +51,7 @@
                     <dd class="govuk-summary-list__value">
                         @Html.ToProviderType(Model)
                     </dd>
+                    <dd class="govuk-summary-list__actions" ></dd>
                 </div>
               
                 <div class="govuk-summary-list__row">
@@ -57,6 +61,7 @@
                     <dd class="govuk-summary-list__value">
                         @Html.ToBooleanYesNo(Model.IsProviderHasStandard)
                     </dd>
+                    <dd class="govuk-summary-list__actions" ></dd>
                 </div>
 
                 <div class="govuk-summary-list__row">
