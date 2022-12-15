@@ -16,6 +16,8 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        NLogBuilder.ConfigureNLog("nlog.config");
+
         builder.Host.UseNLog();
 
         builder.AddConfigFromAzureTableStorage();
