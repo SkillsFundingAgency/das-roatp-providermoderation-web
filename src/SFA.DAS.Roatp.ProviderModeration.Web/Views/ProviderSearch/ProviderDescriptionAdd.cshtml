@@ -18,12 +18,11 @@
                     Please copy and paste the provider description into the text box below
                 </label>
                 <span asp-validation-for="ProviderDescription" class="govuk-error-message"></span>
-                <textarea class="govuk-textarea" id="ProviderDescription" name="ProviderDescription" rows="10" asp-for="ProviderDescription" aria-describedby="ProviderDescription"></textarea>
+                <textarea class="govuk-textarea" id="ProviderDescription" name="ProviderDescription" rows="10" asp-for="ProviderDescription" aria-describedby="ProviderDescription" sfa-validation-for="FeedbackMessage" sfa-validationerror-class="govuk-textarea--error-override"></textarea>
                 <label class="govuk-label">
                     Maximum 750 characters
                 </label>
             </div>
-
             <div class="govuk-button-group">
                 <button id="submit" type="submit" class="govuk-button">Continue</button>
                 <a href="@Model.CancelLink" class="govuk-link">Cancel</a>

@@ -1,9 +1,6 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
-using SFA.DAS.Roatp.ProviderModeration.Domain.ApiModels;
-using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
 using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
@@ -23,25 +20,37 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         }
 
         [HttpGet]
-        [Route("providers/add-provider-description", Name = RouteNames.GetAddProviderDescription)]
-        public IActionResult Index()
+        [Route("providers/{ukprn}/add-provider-description", Name = RouteNames.GetAddProviderDescription)]
+        public async Task<IActionResult> Index([FromRoute] int ukprn)
         {
-            var providerDescriptionAddViewModel = new ProviderDescriptionAddViewModel();
-            providerDescriptionAddViewModel.LegalName = "Test";
+            var providerSearchResult = await _mediator.Send(new GetProviderQuery(ukprn));
+            var providerDescriptionAddViewModel = new ProviderDescriptionAddViewModel
+            {
+                Ukprn = ukprn,
+                LegalName = providerSearchResult.Provider.LegalName,
+                CancelLink = Url.RouteUrl(RouteNames.GetProviderDescription)
+            };
             return View("~/Views/ProviderSearch/ProviderDescriptionAdd.cshtml", providerDescriptionAddViewModel);
         }
 
         [HttpPost]
-        [Route("providers/add-provider-description", Name = RouteNames.PostAddProviderDescription)]
-        public IActionResult AddProviderDescription(ProviderDescriptionAddSubmitModel model)
+        [Route("providers/{ukprn}/add-provider-description", Name = RouteNames.PostAddProviderDescription)]
+        public IActionResult AddProviderDescription(ProviderDescriptionAddSubmitModel submitModel)
         {
-            _logger.LogInformation("Provider description gathering for {ukprn}", model.Ukprn);
+            _logger.LogInformation("Provider description gathering for {ukprn}", submitModel.Ukprn);
 
             if (!ModelState.IsValid)
             {
-                return View("~/Views/ProviderSearch/Index.cshtml", model);
+                var model = new ProviderDescriptionAddViewModel()
+                {
+                    Ukprn = submitModel.Ukprn,
+                    LegalName = submitModel.LegalName,
+                    ProviderDescription = submitModel.ProviderDescription,
+                    CancelLink = Url.RouteUrl(RouteNames.GetProviderDescription)
+                };
+                return View("~/Views/ProviderSearch/ProviderDescriptionAdd.cshtml", model);
             }
-            return View();
+            return View("~/Views/ProviderSearch/ProviderDescriptionAdd.cshtml", new ProviderDescriptionAddViewModel { LegalName = submitModel.LegalName , ProviderDescription  = submitModel.ProviderDescription });
         }
     }
 }

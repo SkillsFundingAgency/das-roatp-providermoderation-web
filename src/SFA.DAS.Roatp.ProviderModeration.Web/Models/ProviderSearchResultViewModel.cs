@@ -1,6 +1,5 @@
 ﻿using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Domain.ApiModels;
-using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Models
 {
@@ -35,7 +34,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Models
                 ShowAddLink = source.Provider.ProviderStatusType == ProviderStatusType.Onboarding && string.IsNullOrEmpty(source.Provider.MarketingInfo) ? "display: inline;" : "display: none;",
                 ShowChangeLink = string.IsNullOrEmpty(source.Provider.MarketingInfo) ?  "display: none;" : "display: inline;",
                 ProviderDescriptionStatus = string.IsNullOrEmpty(source.Provider.MarketingInfo) ? "Not submitted" : "Submitted",
-            };
-        }
+        };
+    }
     }
 }
