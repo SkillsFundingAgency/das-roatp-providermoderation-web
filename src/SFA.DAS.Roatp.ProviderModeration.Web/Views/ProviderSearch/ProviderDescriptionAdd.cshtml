@@ -1,0 +1,33 @@
+﻿@model SFA.DAS.Roatp.ProviderModeration.Web.Models.ProviderDescriptionAddViewModel
+@using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure
+@{
+    ViewBag.Title = "Add provider description";
+}
+
+<a class="govuk-back-link" asp-controller="ProviderSearch" asp-action="Index">Back</a>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_validationSummary" /> 
+        <h1 class="govuk-heading-xl">Add a provider description for @Model.LegalName</h1>
+
+        <form method="post" asp-route="@RouteNames.PostAddProviderDescription" enctype="multipart/form-data" novalidate>
+            <input type="hidden" asp-for="@Model.Ukprn" />
+            <input type="hidden" asp-for="@Model.LegalName" />
+            <div esfa-validation-marker-for="ProviderDescription" class="govuk-form-group">
+                <label class="govuk-label" asp-for="ProviderDescription">
+                    Please copy and paste the provider description into the text box below
+                </label>
+                <span asp-validation-for="ProviderDescription" class="govuk-error-message"></span>
+                <textarea class="govuk-textarea" id="ProviderDescription" name="ProviderDescription" rows="10" asp-for="ProviderDescription" aria-describedby="ProviderDescription"></textarea>
+                <label class="govuk-label">
+                    Maximum 750 characters
+                </label>
+            </div>
+
+            <div class="govuk-button-group">
+                <button id="submit" type="submit" class="govuk-button">Continue</button>
+                <a href="@Model.CancelLink" class="govuk-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
