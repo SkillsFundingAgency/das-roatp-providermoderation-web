@@ -1,13 +1,14 @@
 ﻿using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Domain.ApiModels;
 using SFA.DAS.Roatp.ProviderModeration.Web.Controllers;
+using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSearchControllerTests
@@ -18,10 +19,11 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
         private ProviderSearchController _controller;
         private Mock<ILogger<ProviderSearchController>> _logger;
         private Mock<IMediator> _mediator;
+        private Mock<IUrlHelper> _urlHelperMock;
 
         public const int Ukprn = 12345678;
         public const string MarketingInfo = "Marketing info";
-        
+        string verifyAddProviderDescriptionUrl = "http://test-AddProviderDescriptionUrl";
 
         [SetUp]
         public void Before_each_test()
@@ -39,7 +41,14 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
                    Provider = provider
                 });
 
+            _urlHelperMock = new Mock<IUrlHelper>();
+
+            _urlHelperMock
+               .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName.Equals(RouteNames.GetAddProviderDescription))))
+               .Returns(verifyAddProviderDescriptionUrl);
+
             _controller = new ProviderSearchController(_mediator.Object, _logger.Object);
+            _controller.Url = _urlHelperMock.Object;
         }
 
         [Test]
@@ -50,7 +59,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
                 Ukprn = Ukprn
             };
 
-            var result = await _controller.GetProviderDescription(model);
+
+           var result = await _controller.GetProviderDescription(model);
         
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();

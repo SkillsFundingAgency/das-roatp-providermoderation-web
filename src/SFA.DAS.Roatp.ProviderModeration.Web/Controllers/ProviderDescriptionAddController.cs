@@ -11,8 +11,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
     {
         private readonly IMediator _mediator;
         private readonly ILogger<ProviderDescriptionAddController> _logger;
-        public const string ProviderNotAvailable = "no provider has been found";
-        public const string ProviderNotMainProvider = "this provider is not valid";
+        public const string ViewPath = "~/Views/ProviderSearch/ProviderDescriptionAdd.cshtml";
         public ProviderDescriptionAddController(IMediator mediator, ILogger<ProviderDescriptionAddController> logger)
         {
             _mediator = mediator;
@@ -30,7 +29,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                 LegalName = providerSearchResult.Provider.LegalName,
                 CancelLink = Url.RouteUrl(RouteNames.GetProviderDescription)
             };
-            return View("~/Views/ProviderSearch/ProviderDescriptionAdd.cshtml", providerDescriptionAddViewModel);
+            return View(ViewPath, providerDescriptionAddViewModel);
         }
 
         [HttpPost]
@@ -48,9 +47,9 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                     ProviderDescription = submitModel.ProviderDescription,
                     CancelLink = Url.RouteUrl(RouteNames.GetProviderDescription)
                 };
-                return View("~/Views/ProviderSearch/ProviderDescriptionAdd.cshtml", model);
+                return View(ViewPath, model);
             }
-            return View("~/Views/ProviderSearch/ProviderDescriptionAdd.cshtml", new ProviderDescriptionAddViewModel { LegalName = submitModel.LegalName , ProviderDescription  = submitModel.ProviderDescription });
+            return View(ViewPath, new ProviderDescriptionAddViewModel { LegalName = submitModel.LegalName , ProviderDescription  = submitModel.ProviderDescription });
         }
     }
 }
