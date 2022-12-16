@@ -6,7 +6,7 @@ using SFA.DAS.Roatp.ProviderModeration.Web.Validators;
 namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderDescriptionAddSubmitModelValidatorTests
 {
     [TestFixture]
-    public class ValidateProviderDescriptionTests
+    public class ProviderDescriptionValidationTests
     {
         [TestCase(null)]
         [TestCase("")]

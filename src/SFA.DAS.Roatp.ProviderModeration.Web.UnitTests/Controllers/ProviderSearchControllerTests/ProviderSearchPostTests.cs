@@ -54,18 +54,22 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
         [Test]
         public async Task ProviderController_GetProviderDescription_ReturnsValidResponse()
         {
-            var model = new ProviderSearchSubmitModel
+            var submitModel = new ProviderSearchSubmitModel
             {
                 Ukprn = Ukprn
             };
 
 
-           var result = await _controller.GetProviderDescription(model);
+           var result = await _controller.GetProviderDescription(submitModel);
         
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
             viewResult?.ViewName.Should().Contain("ProviderSearch/SearchResults.cshtml");
             viewResult?.Model.Should().NotBeNull();
+            var model = viewResult.Model as ProviderSearchResultViewModel;
+            model.Should().NotBeNull();
+            model.AddProviderDescriptionLink.Should().Be(verifyAddProviderDescriptionUrl);
+            model.ChangeProviderDescriptionLink.Should().Be(verifyAddProviderDescriptionUrl);
         }
 
         [Test]
