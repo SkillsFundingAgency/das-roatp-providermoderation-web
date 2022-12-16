@@ -49,8 +49,11 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                     return View("~/Views/ProviderSearch/Index.cshtml", submitModel);
                 }
                 var resultModel = (ProviderSearchResultViewModel)providerSearchResult;
-                resultModel.AddProviderDescriptionLink = Url.RouteUrl(RouteNames.GetAddProviderDescription, new { ukprn = submitModel.Ukprn });
-                resultModel.ChangeProviderDescriptionLink = Url.RouteUrl(RouteNames.GetAddProviderDescription, new { ukprn = submitModel.Ukprn });
+                if(resultModel != null)
+                {
+                    resultModel.AddProviderDescriptionLink = Url.RouteUrl(RouteNames.GetAddProviderDescription, new { ukprn = submitModel.Ukprn });
+                    resultModel.ChangeProviderDescriptionLink = Url.RouteUrl(RouteNames.GetAddProviderDescription, new { ukprn = submitModel.Ukprn });
+                }
                 return View("~/Views/ProviderSearch/SearchResults.cshtml", resultModel);
 
             }
