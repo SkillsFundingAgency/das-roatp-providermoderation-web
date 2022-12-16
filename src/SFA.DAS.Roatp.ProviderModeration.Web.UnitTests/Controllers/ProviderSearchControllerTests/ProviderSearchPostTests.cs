@@ -109,7 +109,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
             var result = await _controller.GetProviderDescription(model);
 
             var viewResult = result as ViewResult;
-            viewResult.Should().NotBeNull();
+            viewResult?.Should().NotBeNull();
             viewResult?.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
             viewResult?.Model.Should().NotBeNull();
 

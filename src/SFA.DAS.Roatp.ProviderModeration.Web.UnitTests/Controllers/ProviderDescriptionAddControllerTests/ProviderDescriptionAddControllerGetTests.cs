@@ -49,7 +49,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
 
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
-            viewResult.ViewName.Should().Contain(ProviderDescriptionAddController.ViewPath);
+            viewResult?.ViewName.Should().Contain(ProviderDescriptionAddController.ViewPath);
             var model = viewResult.Model as ProviderDescriptionAddViewModel;
             model.Should().NotBeNull();
             model.CancelLink.Should().Be(verifyUrl);
