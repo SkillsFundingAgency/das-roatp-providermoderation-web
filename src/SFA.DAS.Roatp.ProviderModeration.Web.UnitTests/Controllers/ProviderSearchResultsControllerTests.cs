@@ -11,13 +11,13 @@ using SFA.DAS.Roatp.ProviderModeration.Web.Controllers;
 using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
-namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDescriptionAddControllerTests
+namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSearchResultsControllerTests
 {
     [TestFixture]
     public class ProviderSearchResultsControllerTests
     {
         private Mock<IMediator> _mediatorMock;
-        private ProviderDescriptionAddController _sut;
+        private ProviderSearchResultsController _sut;
         private Mock<IUrlHelper> _urlHelperMock;
         string verifyUrl = "http://test";
 
@@ -29,15 +29,15 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             _urlHelperMock = new Mock<IUrlHelper>();
 
             _urlHelperMock
-               .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName.Equals(RouteNames.GetProviderDetails))))
+               .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName.Equals(RouteNames.GetAddProviderDescription))))
                .Returns(verifyUrl);
 
-            _sut = new ProviderDescriptionAddController(_mediatorMock.Object, Mock.Of<ILogger<ProviderDescriptionAddController>>());
+            _sut = new ProviderSearchResultsController(_mediatorMock.Object, Mock.Of<ILogger<ProviderSearchResultsController>>());
             _sut.Url = _urlHelperMock.Object;
         }
 
         [Test, AutoData]
-        public async Task Index_ValidRequest_ReturnsView(
+        public async Task GetProvider_ValidRequest_ReturnsView(
             GetProviderQueryResult providerQueryResult,
             int ukprn)
         {
@@ -45,14 +45,15 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
                 .Setup(m => m.Send(It.Is<GetProviderQuery>(q => q.Ukprn == ukprn), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(providerQueryResult);
 
-            var result = await _sut.Index(ukprn);
+            var result = await _sut.GetProvider(ukprn);
 
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
-            viewResult?.ViewName.Should().Contain(ProviderDescriptionAddController.ViewPath);
-            var model = viewResult.Model as ProviderDescriptionAddViewModel;
+            viewResult?.ViewName.Should().Contain("ProviderSearch/SearchResults.cshtml");
+            var model = viewResult.Model as ProviderSearchResultViewModel;
             model.Should().NotBeNull();
-            model.CancelLink.Should().Be(verifyUrl);
+            model.AddProviderDescriptionLink.Should().Be(verifyUrl);
+            model.ChangeProviderDescriptionLink.Should().Be(verifyUrl);
         }
     }
 }

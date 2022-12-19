@@ -27,7 +27,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             {
                 Ukprn = ukprn,
                 LegalName = providerSearchResult.Provider.LegalName,
-                CancelLink = Url.RouteUrl(RouteNames.GetProviderDescription)
+                CancelLink = Url.RouteUrl(RouteNames.GetProviderDetails, new { ukprn = ukprn })
             };
             return View(ViewPath, providerDescriptionAddViewModel);
         }
