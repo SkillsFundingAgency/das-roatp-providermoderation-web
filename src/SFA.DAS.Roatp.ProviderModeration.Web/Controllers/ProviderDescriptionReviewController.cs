@@ -11,7 +11,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
     {
         private readonly IMediator _mediator;
         private readonly ILogger<ProviderDescriptionReviewController> _logger;
-        public const string ViewPath = "~/Views/ProviderSearch/ProviderDescriptionAdd.cshtml";
+        public const string ViewPath = "~/Views/ProviderSearch/ProviderDescriptionReview.cshtml";
         public ProviderDescriptionReviewController(IMediator mediator, ILogger<ProviderDescriptionReviewController> logger)
         {
             _mediator = mediator;
@@ -23,59 +23,47 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         public async Task<IActionResult> Index([FromRoute] int ukprn)
         {
             var providerSearchResult = await _mediator.Send(new GetProviderQuery(ukprn));
-            var providerDescriptionAddViewModel = new ProviderDescriptionAddViewModel
+
+            var providerDescriptionTempData = (string)TempData["ProviderDescription"];
+            TempData.Keep("ProviderDescription");
+            var providerDescriptionReviewViewModel = new ProviderDescriptionReviewViewModel
             {
                 Ukprn = ukprn,
                 LegalName = providerSearchResult.Provider.LegalName,
-                CancelLink = Url.RouteUrl(RouteNames.GetProviderDescription)
+                ProviderDescription = providerDescriptionTempData,
+                CancelLink = Url.RouteUrl(RouteNames.GetProviderDetails, new { ukprn }),
+                EditEntry = Url.RouteUrl(RouteNames.GetReviewProviderDescriptionEdit, new { ukprn }),
+                
             };
-            return View(ViewPath, providerDescriptionAddViewModel);
+            return View(ViewPath, providerDescriptionReviewViewModel);
         }
 
         [HttpGet]
-        //[Route("providers/{ukprn}/review-provider-description-edit", Name = RouteNames.GetReviewProviderDescriptionEdit)]
-        public IActionResult EditEntry()
+        [Route("providers/{ukprn}/review-provider-description-edit", Name = RouteNames.GetReviewProviderDescriptionEdit)]
+        public IActionResult EditEntry([FromRoute] int ukprn)
         {
-            var model = TempData["ProviderDescription"] as ProviderDescriptionReviewViewModel;
-            //var providerSearchResult = await _mediator.Send(new GetProviderQuery(ukprn));
-            var providerDescriptionAddViewModel = new ProviderDescriptionAddViewModel
-            {
-                Ukprn = model.Ukprn,
-                LegalName = model.LegalName,
-                ProviderDescription = model.ProviderDescription,
-                CancelLink = Url.RouteUrl(RouteNames.GetProviderDescription)
-            };
-            return View("~/Views/ProviderSearch/ProviderDescriptionAdd.cshtml", providerDescriptionAddViewModel);
+            TempData.Keep("ProviderDescription");
+            return RedirectToRoute(RouteNames.GetAddProviderDescription, new { ukprn });
         }
 
         [HttpPost]
         [Route("providers/{ukprn}/review-provider-description", Name = RouteNames.PostReviewProviderDescription)]
         public IActionResult ReviewProviderDescription(ProviderDescriptionReviewViewModel submitModel)
         {
-            _logger.LogInformation("Provider description gathering for {ukprn}", submitModel.Ukprn);
-
-            if (!ModelState.IsValid)
+            _logger.LogInformation("Provider description updating for {ukprn}", submitModel.Ukprn);
+            TempData.Keep("ProviderDescription");
+            var resultModel = new ProviderDescriptionReviewViewModel()
             {
-                var model = new ProviderDescriptionAddViewModel()
+                Ukprn = submitModel.Ukprn,
+                LegalName = submitModel.LegalName,
+                ProviderDescription = submitModel.ProviderDescription,
+                CancelLink = Url.RouteUrl(RouteNames.GetProviderDetails, new { submitModel.Ukprn }),
+                EditEntry = Url.RouteUrl(RouteNames.GetReviewProviderDescriptionEdit, new
                 {
-                    Ukprn = submitModel.Ukprn,
-                    LegalName = submitModel.LegalName,
-                    ProviderDescription = submitModel.ProviderDescription,
-                    CancelLink = Url.RouteUrl(RouteNames.GetProviderDescription)
-                };
-                return View(ViewPath, model);
-            }
-                 var resultModel = new ProviderDescriptionReviewViewModel()
-                 {
-                     Ukprn = submitModel.Ukprn,
-                     LegalName = submitModel.LegalName,
-                     ProviderDescription = submitModel.ProviderDescription,
-                     EditEntry = Url.RouteUrl(RouteNames.GetAddProviderDescription,new
-                     {
-                         ukprn = submitModel.Ukprn,
-                     })
-                 };
-            return View("~/Views/ProviderSearch/ProviderDescriptionReview.cshtml", resultModel);
+                    ukprn = submitModel.Ukprn,
+                })
+            };
+            return View(ViewPath, resultModel);
         }
     }
 }

@@ -25,6 +25,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         public async Task<IActionResult> GetProvider([FromRoute] int ukprn)
         {
             _logger.LogInformation("Provider description gathering for {ukprn}", ukprn);
+            TempData.Remove("ProviderDescription");
             var providerSearchResult = await _mediator.Send(new GetProviderQuery(ukprn));
             var resultModel = (ProviderSearchResultViewModel)providerSearchResult;
             if (resultModel != null)

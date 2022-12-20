@@ -48,6 +48,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                     ModelState.AddModelError("ProviderNotMainProvider", ProviderNotMainProvider);
                     return View("~/Views/ProviderSearch/Index.cshtml", submitModel);
                 }
+                TempData.Remove("ProviderDescription");
                 return RedirectToRoute(RouteNames.GetProviderDetails, new { submitModel.Ukprn });
             }
             catch (InvalidOperationException)

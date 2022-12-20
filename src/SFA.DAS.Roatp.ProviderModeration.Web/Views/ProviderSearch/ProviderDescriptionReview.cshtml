@@ -4,7 +4,7 @@
     ViewBag.Title = "Add provider description";
 }
 
-<a class="govuk-back-link" asp-controller="ProviderSearch" asp-action="Index">Back</a>
+<a class="govuk-back-link" href="@Model.CancelLink">Back</a>
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_validationSummary" /> 
@@ -21,7 +21,7 @@
             </div>
             <div class="govuk-button-group">
                 <button id="submit" type="submit" class="govuk-button">Submit</button>
-                <a asp-controller="ProviderDescriptionReview" asp-action="EditEntry" class="govuk-link">Edit entry</a>
+                <a href="@Model.EditEntry" class="govuk-link">Edit entry</a>
             </div>
         </form>
     </div>
