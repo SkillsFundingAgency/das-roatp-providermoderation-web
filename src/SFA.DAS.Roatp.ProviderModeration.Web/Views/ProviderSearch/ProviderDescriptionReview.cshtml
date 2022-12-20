@@ -1,0 +1,28 @@
+﻿@model SFA.DAS.Roatp.ProviderModeration.Web.Models.ProviderDescriptionReviewViewModel
+@using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure
+@{
+    ViewBag.Title = "Add provider description";
+}
+
+<a class="govuk-back-link" asp-controller="ProviderSearch" asp-action="Index">Back</a>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_validationSummary" /> 
+        <h1 class="govuk-heading-xl">Check the provider description entry for @Model.LegalName</h1>
+
+        <form method="post" asp-route="@RouteNames.PostReviewProviderDescription" enctype="multipart/form-data" novalidate>
+            <input type="hidden" asp-for="@Model.Ukprn" />
+            <input type="hidden" asp-for="@Model.LegalName" />
+            <input type="hidden" asp-for="@Model.ProviderDescription" />
+            <div esfa-validation-marker-for="ProviderDescription" class="govuk-form-group">
+            <label class="govuk-label" asp-for="ProviderDescription">
+                @Model.ProviderDescription
+            </label>
+            </div>
+            <div class="govuk-button-group">
+                <button id="submit" type="submit" class="govuk-button">Submit</button>
+                <a asp-controller="ProviderDescriptionReview" asp-action="EditEntry" class="govuk-link">Edit entry</a>
+            </div>
+        </form>
+    </div>
+</div>

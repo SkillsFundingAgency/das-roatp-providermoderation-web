@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Domain.ApiModels;
-using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
 using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
@@ -48,14 +48,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                     ModelState.AddModelError("ProviderNotMainProvider", ProviderNotMainProvider);
                     return View("~/Views/ProviderSearch/Index.cshtml", submitModel);
                 }
-                var resultModel = (ProviderSearchResultViewModel)providerSearchResult;
-                if(resultModel != null)
-                {
-                    resultModel.AddProviderDescriptionLink = Url.RouteUrl(RouteNames.GetAddProviderDescription, new { ukprn = submitModel.Ukprn });
-                    resultModel.ChangeProviderDescriptionLink = Url.RouteUrl(RouteNames.GetAddProviderDescription, new { ukprn = submitModel.Ukprn });
-                }
-                return View("~/Views/ProviderSearch/SearchResults.cshtml", resultModel);
-
+                return RedirectToRoute(RouteNames.GetProviderDetails, new { submitModel.Ukprn });
             }
             catch (InvalidOperationException)
             {

@@ -18,7 +18,7 @@
                     Please copy and paste the provider description into the text box below
                 </label>
                 <span asp-validation-for="ProviderDescription" class="govuk-error-message"></span>
-                <textarea class="govuk-textarea" id="ProviderDescription" name="ProviderDescription" rows="10" asp-for="ProviderDescription" aria-describedby="ProviderDescription" sfa-validation-for="FeedbackMessage" sfa-validationerror-class="govuk-textarea--error-override"></textarea>
+                <textarea class="govuk-textarea" id="ProviderDescription" name="ProviderDescription" rows="10" asp-for="ProviderDescription" aria-describedby="ProviderDescription" sfa-validation-for="ProviderDescription" sfa-validationerror-class="govuk-textarea--error-override">@Model.ProviderDescription</textarea>
                 <label class="govuk-label">
                     Maximum 750 characters
                 </label>

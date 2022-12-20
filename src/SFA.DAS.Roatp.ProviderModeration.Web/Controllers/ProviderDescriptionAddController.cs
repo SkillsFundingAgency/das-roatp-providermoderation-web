@@ -49,7 +49,18 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                 };
                 return View(ViewPath, model);
             }
-            return View(ViewPath, new ProviderDescriptionAddViewModel { Ukprn = submitModel.Ukprn, LegalName = submitModel.LegalName , ProviderDescription  = submitModel.ProviderDescription });
+            var resultModel = new ProviderDescriptionReviewViewModel()
+            {
+                Ukprn = submitModel.Ukprn,
+                LegalName = submitModel.LegalName,
+                ProviderDescription = submitModel.ProviderDescription,
+                EditEntry = Url.RouteUrl(RouteNames.GetAddProviderDescription, new
+                {
+                    ukprn = submitModel.Ukprn,
+                })
+            };
+            TempData["ProviderDescription"] = resultModel;
+            return View("~/Views/ProviderSearch/ProviderDescriptionReview.cshtml", resultModel);
         }
     }
 }
