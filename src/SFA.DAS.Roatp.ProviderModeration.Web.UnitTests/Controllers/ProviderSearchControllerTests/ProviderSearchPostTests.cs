@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -16,7 +18,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
     [TestFixture]
     public class ProviderSearchPostTests
     {
-        private ProviderSearchController _controller;
+        private ProviderSearchController _sut;
         private Mock<ILogger<ProviderSearchController>> _logger;
         private Mock<IMediator> _mediator;
         private Mock<IUrlHelper> _urlHelperMock;
@@ -47,8 +49,12 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
                .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName.Equals(RouteNames.GetAddProviderDescription))))
                .Returns(verifyAddProviderDescriptionUrl);
 
-            _controller = new ProviderSearchController(_mediator.Object, _logger.Object);
-            _controller.Url = _urlHelperMock.Object;
+            _sut = new ProviderSearchController(_mediator.Object, _logger.Object);
+            _sut.Url = _urlHelperMock.Object;
+
+            var httpContext = new DefaultHttpContext();
+            var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
+            _sut.TempData = tempData;
         }
 
         [Test]
@@ -59,17 +65,11 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
                 Ukprn = Ukprn
             };
 
+            var result = await _sut.GetProviderDescription(submitModel);
 
-           var result = await _controller.GetProviderDescription(submitModel);
-        
-            var viewResult = result as ViewResult;
-            viewResult.Should().NotBeNull();
-            viewResult?.ViewName.Should().Contain("ProviderSearch/SearchResults.cshtml");
-            viewResult?.Model.Should().NotBeNull();
-            var model = viewResult.Model as ProviderSearchResultViewModel;
-            model.Should().NotBeNull();
-            model.AddProviderDescriptionLink.Should().Be(verifyAddProviderDescriptionUrl);
-            model.ChangeProviderDescriptionLink.Should().Be(verifyAddProviderDescriptionUrl);
+            var redirectResult = result as RedirectToRouteResult;
+            redirectResult.Should().NotBeNull();
+            redirectResult.RouteName.Should().Be(RouteNames.GetProviderDetails);
         }
 
         [Test]
@@ -86,14 +86,14 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
                     Provider = provider
                 });
 
-            _controller = new ProviderSearchController(_mediator.Object, _logger.Object);
+            _sut = new ProviderSearchController(_mediator.Object, _logger.Object);
 
             var model = new ProviderSearchSubmitModel
             {
                 Ukprn = Ukprn
             };
 
-            var result = await _controller.GetProviderDescription(model);
+            var result = await _sut.GetProviderDescription(model);
 
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
@@ -104,13 +104,13 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
         [Test]
         public async Task ProviderController_GetProviderDescription_ModelStateErrorReturnSameView()
         {
-            _controller.ModelState.AddModelError("ProviderNotMainProvider", "ErrorMessage");
+            _sut.ModelState.AddModelError("ProviderNotMainProvider", "ErrorMessage");
 
             var model = new ProviderSearchSubmitModel
             {
                 Ukprn = Ukprn
             };
-            var result = await _controller.GetProviderDescription(model);
+            var result = await _sut.GetProviderDescription(model);
 
             var viewResult = result as ViewResult;
             viewResult?.Should().NotBeNull();
@@ -126,13 +126,13 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
             _mediator.Setup(x => x.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new InvalidOperationException());
 
-            _controller = new ProviderSearchController(_mediator.Object, _logger.Object);
+            _sut = new ProviderSearchController(_mediator.Object, _logger.Object);
 
             var model = new ProviderSearchSubmitModel
             {
                 Ukprn = Ukprn
             };
-            var result = await _controller.GetProviderDescription(model);
+            var result = await _sut.GetProviderDescription(model);
 
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
