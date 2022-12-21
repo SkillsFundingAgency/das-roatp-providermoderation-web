@@ -2,7 +2,7 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using NLog.Web;
-using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
+using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
 using SFA.DAS.Roatp.ProviderModeration.Web.Validators;
 using System.Diagnostics.CodeAnalysis;

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Roatp.ProviderModeration.Domain.Interfaces;
 
-namespace SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider
+namespace SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider
 {
     public class GetProviderQueryHandler : IRequestHandler<GetProviderQuery, GetProviderQueryResult>
     {
@@ -13,7 +13,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider
             _logger = logger;
             _apiClient = apiClient;
         }
-        
+
         public async Task<GetProviderQueryResult> Handle(GetProviderQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Get Provider request received for Ukprn number {ukprn}", request.Ukprn);

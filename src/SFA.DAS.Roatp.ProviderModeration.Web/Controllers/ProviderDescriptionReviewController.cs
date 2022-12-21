@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
+using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Commands.UpdateProviderDescription;
+using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
@@ -48,22 +49,22 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
 
         [HttpPost]
         [Route("providers/{ukprn}/review-provider-description", Name = RouteNames.PostReviewProviderDescription)]
-        public IActionResult ReviewProviderDescription(ProviderDescriptionReviewViewModel submitModel)
+        public async Task<IActionResult> ReviewProviderDescription(ProviderDescriptionReviewViewModel submitModel)
         {
             _logger.LogInformation("Provider description updating for {ukprn}", submitModel.Ukprn);
-            TempData.Keep("ProviderDescription");
-            var resultModel = new ProviderDescriptionReviewViewModel()
+            TempData.Remove("ProviderDescription");
+            
+            var command = new UpdateProviderDescriptionCommand
             {
                 Ukprn = submitModel.Ukprn,
-                LegalName = submitModel.LegalName,
-                ProviderDescription = submitModel.ProviderDescription,
-                CancelLink = Url.RouteUrl(RouteNames.GetProviderDetails, new { submitModel.Ukprn }),
-                EditEntry = Url.RouteUrl(RouteNames.GetReviewProviderDescriptionEdit, new
-                {
-                    ukprn = submitModel.Ukprn,
-                })
+                UserId = "123", //to be replaced with actual
+                UserDisplayName = "Internal user", //to be replaced with actual
+                ProviderDescription = submitModel.ProviderDescription
             };
-            return View(ViewPath, resultModel);
+
+            await _mediator.Send(command);
+
+            return RedirectToRoute(RouteNames.GetProviderDetails, new { submitModel.Ukprn });
         }
     }
 }

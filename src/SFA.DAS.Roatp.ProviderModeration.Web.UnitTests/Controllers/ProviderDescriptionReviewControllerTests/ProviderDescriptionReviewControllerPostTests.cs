@@ -49,7 +49,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
         }
 
         [Test]
-        public void ReviewProviderDescription_ValidResponseReturnsSameView()
+        public async Task ReviewProviderDescription_ValidResponseReturnsSameView()
         {
             var submitModel = new ProviderDescriptionReviewViewModel
             {
@@ -63,18 +63,11 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             tempData["ProviderDescription"] = submitModel.ProviderDescription;
             _sut.TempData = tempData;
 
-            var result = _sut.ReviewProviderDescription(submitModel);
+            var result = await _sut.ReviewProviderDescription(submitModel);
 
-            var viewResult = result as ViewResult;
-            viewResult.Should().NotBeNull();
-            viewResult.ViewName.Should().Contain(ProviderDescriptionReviewController.ViewPath);
-            var model = viewResult.Model as ProviderDescriptionReviewViewModel;
-            model.Should().NotBeNull();
-            model.Ukprn.Should().Be(submitModel.Ukprn);
-            model.LegalName.Should().Be(submitModel.LegalName);
-            model.ProviderDescription.Should().Be(submitModel.ProviderDescription);
-            model.CancelLink.Should().Be(verifyUrl);
-            model.EditEntry.Should().Be(verifyEditUrl);
+            var redirectResult = result as RedirectToRouteResult;
+            redirectResult.Should().NotBeNull();
+            redirectResult.RouteName.Should().Be(RouteNames.GetProviderDetails);
         }
     }
 }
