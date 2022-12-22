@@ -1,14 +1,16 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Commands.UpdateProviderDescription;
 using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
+using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
 using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
 {
-    //[Authorize(Roles = Roles.RoatpTribalTeam)]
-    public class ProviderDescriptionReviewController : Controller
+    [Authorize(Roles = Roles.RoatpTribalTeam)]
+    public class ProviderDescriptionReviewController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly ILogger<ProviderDescriptionReviewController> _logger;
@@ -57,8 +59,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             var command = new UpdateProviderDescriptionCommand
             {
                 Ukprn = submitModel.Ukprn,
-                UserId = "123", //to be replaced with actual
-                UserDisplayName = "Internal user", //to be replaced with actual
+                UserId = UserId,
+                UserDisplayName = UserDisplayName,
                 ProviderDescription = submitModel.ProviderDescription
             };
 
