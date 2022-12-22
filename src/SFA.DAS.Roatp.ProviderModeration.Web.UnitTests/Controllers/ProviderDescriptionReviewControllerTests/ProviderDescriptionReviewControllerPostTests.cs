@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿
+using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using NUnit.Framework;
 using SFA.DAS.Roatp.ProviderModeration.Web.Controllers;
 using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
+using SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.TestHelpers;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDescriptionReviewControllerTests
 {
@@ -30,7 +32,10 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
         {
             _mediatorMock = new Mock<IMediator>();
 
+            _sut = new ProviderDescriptionReviewController(_mediatorMock.Object, Mock.Of<ILogger<ProviderDescriptionReviewController>>());
+            _sut.AddDefaultContextWithUser();
             _urlHelperMock = new Mock<IUrlHelper>();
+            _sut.Url = _urlHelperMock.Object;
 
             _urlHelperMock
                 .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName.Equals(RouteNames.GetProviderDetails))))
@@ -39,9 +44,6 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             _urlHelperMock
                .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName.Equals(RouteNames.GetReviewProviderDescriptionEdit))))
                .Returns(verifyEditUrl);
-
-            _sut = new ProviderDescriptionReviewController(_mediatorMock.Object, Mock.Of<ILogger<ProviderDescriptionReviewController>>());
-            _sut.Url = _urlHelperMock.Object;
 
             var httpContext = new DefaultHttpContext();
             var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
