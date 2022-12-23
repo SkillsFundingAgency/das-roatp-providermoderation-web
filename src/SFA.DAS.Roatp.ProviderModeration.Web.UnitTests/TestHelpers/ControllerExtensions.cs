@@ -11,7 +11,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.TestHelpers
     {
         public static Controller AddDefaultContextWithUser(this Controller controller)
         {
-            controller.ControllerContext = GetDefaultHttpContextWithUser(TestConstants.DefaultGivenName, TestConstants.DefaultSurNameName, TestConstants.DefaultUserId);
+            controller.ControllerContext = GetDefaultHttpContextWithUser(TestConstants.DefaultGivenName, TestConstants.DefaultSurName, TestConstants.DefaultUserId);
             controller.Url = Mock.Of<IUrlHelper>();
             return controller;
         }

@@ -11,7 +11,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure
         public const string GetAddProviderDescription = "add-provider-description";
         public const string PostAddProviderDescription = "add-provider-description";
         public const string GetReviewProviderDescription = "review-provider-description";
-        public const string GetReviewProviderDescriptionEdit = "review-provider-description-edit";
+        public const string GetReviewProviderDescriptionEdit = "edit-review-provider-description";
         public const string PostReviewProviderDescription = "review-provider-description";
     }
 }
