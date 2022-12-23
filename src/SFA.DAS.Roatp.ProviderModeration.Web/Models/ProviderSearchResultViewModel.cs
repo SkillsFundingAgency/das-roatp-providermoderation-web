@@ -31,7 +31,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Models
                 ProviderStatusType = source.Provider.ProviderStatusType,
                 ProviderStatusUpdatedDate = source.Provider.ProviderStatusUpdatedDate,
                 IsProviderHasStandard = source.Provider.IsProviderHasStandard,
-                ShowAddLink = source.Provider.ProviderStatusType == ProviderStatusType.Onboarding && string.IsNullOrEmpty(source.Provider.MarketingInfo) ? "display: inline;" : "display: none;",
+                ShowAddLink =  string.IsNullOrEmpty(source.Provider.MarketingInfo) ? "display: inline;" : "display: none;",
                 ShowChangeLink = string.IsNullOrEmpty(source.Provider.MarketingInfo) ?  "display: none;" : "display: inline;",
                 ProviderDescriptionStatus = string.IsNullOrEmpty(source.Provider.MarketingInfo) ? "Not submitted" : "Submitted",
         };
