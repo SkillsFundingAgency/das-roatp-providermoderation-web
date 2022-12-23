@@ -6,7 +6,7 @@ using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider
 using SFA.DAS.Roatp.ProviderModeration.Domain.ApiModels;
 using SFA.DAS.Roatp.ProviderModeration.Domain.Interfaces;
 
-namespace SFA.DAS.Roatp.ProviderModeration.Application.UnitTests.Providers.Queries
+namespace SFA.DAS.Roatp.ProviderModeration.Application.UnitTests.Providers.Queries.GetProvider
 {
     [TestFixture]
     public class GetProviderHandlerTests
