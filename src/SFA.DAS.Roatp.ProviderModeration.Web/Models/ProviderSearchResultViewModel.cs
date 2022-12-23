@@ -16,6 +16,10 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Models
         public string ShowAddLink { get; set; }
         public string ShowChangeLink { get; set; }
         public string ProviderDescriptionStatus { get; set; }
+
+        public string AddProviderDescriptionLink { get; set; }
+        public string ChangeProviderDescriptionLink { get; set; }
+
         public static implicit operator ProviderSearchResultViewModel(GetProviderQueryResult source)
         {
             return new()
@@ -29,8 +33,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Models
                 IsProviderHasStandard = source.Provider.IsProviderHasStandard,
                 ShowAddLink = source.Provider.ProviderStatusType == ProviderStatusType.Onboarding && string.IsNullOrEmpty(source.Provider.MarketingInfo) ? "display: inline;" : "display: none;",
                 ShowChangeLink = string.IsNullOrEmpty(source.Provider.MarketingInfo) ?  "display: none;" : "display: inline;",
-                ProviderDescriptionStatus = string.IsNullOrEmpty(source.Provider.MarketingInfo) ? "Not submitted" : "Submitted"
-            };
-        }
+                ProviderDescriptionStatus = string.IsNullOrEmpty(source.Provider.MarketingInfo) ? "Not submitted" : "Submitted",
+        };
+    }
     }
 }
