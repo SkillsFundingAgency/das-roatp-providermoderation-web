@@ -1,8 +1,10 @@
+using FluentValidation.AspNetCore;
 using MediatR;
-using MediatR.Extensions.FluentValidation.AspNetCore;
+using Microsoft.Extensions.Configuration;
 using NLog.Web;
 using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
+using SFA.DAS.Roatp.ProviderModeration.Web.Validators;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web;
@@ -14,20 +16,33 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        NLogBuilder.ConfigureNLog("nlog.config");
+
         builder.Host.UseNLog();
 
         builder.AddConfigFromAzureTableStorage();
 
-        builder.Services.AddControllersWithViews();
+        builder.Services.Configure<RouteOptions>(o=>o.LowercaseUrls = true);
 
+        builder.Services.AddControllersWithViews();
+        
+        builder.Services.RegisterConfigurations(builder.Configuration);
+        
         var applicationAssembly = typeof(GetProviderQuery).Assembly;
+
+        builder.Services
+        .AddFluentValidation(fv =>
+         {
+             fv.RegisterValidatorsFromAssemblyContaining<ProviderSearchSubmitModelValidator>();
+             fv.ImplicitlyValidateChildProperties = true;
+         });
 
         builder.Services
             .AddApplicationInsightsTelemetry()
             .AddMediatR(applicationAssembly)
-            .AddFluentValidation(new[] { applicationAssembly })
             .AddAuthentication(builder.Configuration)
-            .AddApplicationServices();
+            .AddServiceRegistrations(builder.Configuration);
+
 
         //Add services above
         var app = builder.Build();
@@ -45,16 +60,18 @@ public static class Program
             app.UseHsts();
         }
 
-        app
-            .UseHttpsRedirection()
-            .UseStaticFiles()
-            .UseRouting()
-            .UseAuthentication()
-            .UseAuthorization();
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+        app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+        });
 
         app.Run();
     }

@@ -25,6 +25,7 @@ public static class AuthenticationServicesExtension
             {
                 options.Wtrealm = authConfig.WtRealm;
                 options.MetadataAddress = authConfig.MetadataAddress;
+                options.CallbackPath = "/home";
                 options.TokenValidationParameters.RoleClaimType = Roles.RoleClaimType;
             })
             .AddCookie();
@@ -33,14 +34,3 @@ public static class AuthenticationServicesExtension
     }
 }
 
-public static class Roles
-{
-    public const string RoleClaimType = "http://service/service";
-
-    public const string RoatpTribalTeam = "TAD";
-
-    public static bool HasValidRole(this ClaimsPrincipal user)
-    {
-        return user.IsInRole(RoatpTribalTeam);
-    }
-}
