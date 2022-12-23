@@ -14,7 +14,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Application.UnitTests.Handlers
         private GetProviderQueryHandler _handler;
         private Mock<IApiClient> _apiClient;
         private GetProviderQuery _query;
-        private readonly Provider _provider = new();
+        private readonly GetProviderResponse _provider = new();
         private const int Ukprn = 12345678;
         private const string MarketingInfo = "Marketing info";
 
@@ -30,8 +30,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Application.UnitTests.Handlers
         public async Task Handle_ValidApiRequest_ReturnsValidResponse()
         {
             _provider.MarketingInfo = MarketingInfo;
-            _provider.ProviderType = ProviderType.MainProvider; 
-            _apiClient.Setup(x => x.Get<Provider>($"providers/{ _query.Ukprn}")).ReturnsAsync(_provider);
+            _provider.ProviderType = ProviderType.Main; 
+            _apiClient.Setup(x => x.Get<GetProviderResponse>($"providers/{ _query.Ukprn}")).ReturnsAsync(_provider);
             var result = await _handler.Handle(_query, CancellationToken.None);
             result.Should().NotBeNull();
             result.Provider.Should().BeEquivalentTo(_provider);
@@ -40,7 +40,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Application.UnitTests.Handlers
         [Test]
         public void Handle_InvalidApiResponse_ThrowsException()
         {
-            _apiClient.Setup(x => x.Get<Provider>($"providers/{ _query.Ukprn}")).ReturnsAsync((Provider)null);
+            _apiClient.Setup(x => x.Get<GetProviderResponse>($"providers/{ _query.Ukprn}")).ReturnsAsync((GetProviderResponse)null);
 
             Assert.ThrowsAsync<InvalidOperationException>(() => _handler.Handle(_query, CancellationToken.None));
         }

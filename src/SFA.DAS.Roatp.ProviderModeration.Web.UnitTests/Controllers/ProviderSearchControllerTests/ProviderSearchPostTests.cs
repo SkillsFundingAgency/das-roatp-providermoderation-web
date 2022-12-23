@@ -27,10 +27,10 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
         public void Before_each_test()
         {
             _logger = new Mock<ILogger<ProviderSearchController>>();
-            var provider = new Provider
+            var provider = new GetProviderResponse
             {
                 MarketingInfo = MarketingInfo,
-                ProviderType = ProviderType.MainProvider
+                ProviderType = ProviderType.Main
             };
             _mediator = new Mock<IMediator>();
             _mediator.Setup(x => x.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()))
@@ -54,17 +54,17 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
         
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
-            viewResult?.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
+            viewResult?.ViewName.Should().Contain("ProviderSearch/SearchResults.cshtml");
             viewResult?.Model.Should().NotBeNull();
         }
 
         [Test]
         public async Task ProviderController_GetProviderDescription_ReturnsNonValidResponse()
         {
-            var provider = new Provider
+            var provider = new GetProviderResponse
             {
                 MarketingInfo = MarketingInfo,
-                ProviderType = ProviderType.SupportingProvider
+                ProviderType = ProviderType.Supporting
             };
             _mediator.Setup(x => x.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => new GetProviderQueryResult

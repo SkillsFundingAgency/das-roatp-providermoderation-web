@@ -1,0 +1,87 @@
+﻿@using SFA.DAS.Roatp.ProviderModeration.Web.TagHelpers
+@model SFA.DAS.Roatp.ProviderModeration.Web.Models.ProviderSearchResultViewModel
+
+@{
+    ViewBag.Title = Model.LegalName;
+}
+
+
+<a class="govuk-back-link" asp-controller="ProviderSearch" asp-action="Index">Back</a>
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+
+    <div class="govuk-grid-row">
+        <div id="providerSearchResults" class="govuk-grid-column-two-thirds">
+            <dl class="govuk-summary-list">
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Legal name
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Html.Raw(Model.LegalName)
+                    </dd>
+                    <dd class="govuk-summary-list__actions" ></dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        UKPRN
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Html.Raw(Model.Ukprn)
+                    </dd>
+                    <dd class="govuk-summary-list__actions" ></dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Status
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Html.ToProviderStatus(Model)
+                    </dd>
+                    <dd class="govuk-summary-list__actions" ></dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Type of provider
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Html.ToProviderType(Model)
+                    </dd>
+                    <dd class="govuk-summary-list__actions" ></dd>
+                </div>
+              
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Does the provider have a standard
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Html.ToBooleanYesNo(Model.IsProviderHasStandard)
+                    </dd>
+                    <dd class="govuk-summary-list__actions" ></dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Provider description
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Html.Raw(Model.ProviderDescriptionStatus)
+                    </dd>
+                    <dd class="govuk-summary-list__actions" >
+                        <a class="govuk-link" href="#" style='@Model.ShowAddLink'>
+                            Add<span class="govuk-visually-hidden">provider description</span>
+                        </a>
+                        <a class="govuk-link" href="#" style='@Model.ShowChangeLink'>
+                            Change<span class="govuk-visually-hidden">provider description</span>
+                        </a>
+                    </dd>
+                </div>
+
+            </dl>
+        </div>
+    </div>
+</main>

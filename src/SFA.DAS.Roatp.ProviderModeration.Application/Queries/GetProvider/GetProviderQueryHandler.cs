@@ -17,7 +17,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider
         public async Task<GetProviderQueryResult> Handle(GetProviderQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Get Provider request received for Ukprn number {ukprn}", request.Ukprn);
-            var provider = await _apiClient.Get<Domain.ApiModels.Provider>($"providers/{request.Ukprn}");
+            var provider = await _apiClient.Get<Domain.ApiModels.GetProviderResponse>($"providers/{request.Ukprn}");
             if (provider == null)
             {
                 _logger.LogError("Provider not found for {ukprn}", request.Ukprn);
