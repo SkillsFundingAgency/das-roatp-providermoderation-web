@@ -1,12 +1,14 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
+using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Web.Controllers;
 using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
@@ -34,6 +36,10 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
 
             _sut = new ProviderSearchResultsController(_mediatorMock.Object, Mock.Of<ILogger<ProviderSearchResultsController>>());
             _sut.Url = _urlHelperMock.Object;
+
+            var httpContext = new DefaultHttpContext();
+            var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
+            _sut.TempData = tempData;
         }
 
         [Test, AutoData]

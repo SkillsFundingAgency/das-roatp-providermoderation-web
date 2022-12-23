@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -33,12 +35,16 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
                .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName.Equals(RouteNames.GetProviderDescription))))
                .Returns(verifyUrl);
 
+            _urlHelperMock
+               .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName.Equals(RouteNames.GetProviderDetails))))
+               .Returns(verifyUrl);
+
             _sut = new ProviderDescriptionAddController(_mediatorMock.Object, Mock.Of<ILogger<ProviderDescriptionAddController>>());
             _sut.Url = _urlHelperMock.Object;
         }
 
         [Test]
-        public void ProviderDescriptionAddController_AddProviderDescription_ReturnsValidResponse()
+        public void ProviderDescriptionAddController_AddProviderDescription_ValidResponseRedirectToRoute()
         {
             var submitModel = new ProviderDescriptionAddSubmitModel
             {
@@ -47,15 +53,16 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
                 ProviderDescription = ProviderDescription
             };
 
+            var httpContext = new DefaultHttpContext();
+            var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
+            tempData["ProviderDescription"] = submitModel.ProviderDescription;
+            _sut.TempData = tempData;
+
             var result = _sut.AddProviderDescription(submitModel);
 
-            var viewResult = result as ViewResult;
-            viewResult.ViewName.Should().Contain(ProviderDescriptionAddController.ViewPath);
-            var model = viewResult.Model as ProviderDescriptionAddViewModel;
-            model.Should().NotBeNull();
-            model.Ukprn.Should().Be(submitModel.Ukprn);
-            model.LegalName.Should().Be(submitModel.LegalName);
-            model.ProviderDescription.Should().Be(submitModel.ProviderDescription);
+            var redirectResult = result as RedirectToRouteResult;
+            redirectResult.Should().NotBeNull();
+            redirectResult.RouteName.Should().Be(RouteNames.GetReviewProviderDescription);
         }
 
         [Test]
@@ -81,6 +88,5 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             model.ProviderDescription.Should().Be(submitModel.ProviderDescription);
             model.CancelLink.Should().Be(verifyUrl);
         }
-
     }
 }

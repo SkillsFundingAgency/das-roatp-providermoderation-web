@@ -1,4 +1,4 @@
-﻿using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
+﻿using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Domain.ApiModels;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Models

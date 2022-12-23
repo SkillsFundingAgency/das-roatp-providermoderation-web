@@ -2,11 +2,11 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
+using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Domain.ApiModels;
 using SFA.DAS.Roatp.ProviderModeration.Domain.Interfaces;
 
-namespace SFA.DAS.Roatp.ProviderModeration.Application.UnitTests.Handlers
+namespace SFA.DAS.Roatp.ProviderModeration.Application.UnitTests.Providers.Queries
 {
     [TestFixture]
     public class GetProviderHandlerTests
@@ -30,8 +30,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Application.UnitTests.Handlers
         public async Task Handle_ValidApiRequest_ReturnsValidResponse()
         {
             _provider.MarketingInfo = MarketingInfo;
-            _provider.ProviderType = ProviderType.Main; 
-            _apiClient.Setup(x => x.Get<GetProviderResponse>($"providers/{ _query.Ukprn}")).ReturnsAsync(_provider);
+            _provider.ProviderType = ProviderType.Main;
+            _apiClient.Setup(x => x.Get<GetProviderResponse>($"providers/{_query.Ukprn}")).ReturnsAsync(_provider);
             var result = await _handler.Handle(_query, CancellationToken.None);
             result.Should().NotBeNull();
             result.Provider.Should().BeEquivalentTo(_provider);
@@ -40,7 +40,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Application.UnitTests.Handlers
         [Test]
         public void Handle_InvalidApiResponse_ThrowsException()
         {
-            _apiClient.Setup(x => x.Get<GetProviderResponse>($"providers/{ _query.Ukprn}")).ReturnsAsync((GetProviderResponse)null);
+            _apiClient.Setup(x => x.Get<GetProviderResponse>($"providers/{_query.Ukprn}")).ReturnsAsync((GetProviderResponse)null);
 
             Assert.ThrowsAsync<InvalidOperationException>(() => _handler.Handle(_query, CancellationToken.None));
         }

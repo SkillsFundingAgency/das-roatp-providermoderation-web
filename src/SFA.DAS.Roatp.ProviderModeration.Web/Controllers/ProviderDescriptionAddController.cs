@@ -1,12 +1,14 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.Roatp.ProviderModeration.Application.Queries.GetProvider;
+using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
+using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
 using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
 {
-    //[Authorize(Roles = Roles.RoatpTribalTeam)]
+    [Authorize(Roles = Roles.RoatpTribalTeam)]
     public class ProviderDescriptionAddController : Controller
     {
         private readonly IMediator _mediator;
@@ -27,6 +29,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             {
                 Ukprn = ukprn,
                 LegalName = providerSearchResult.Provider.LegalName,
+                ProviderDescription = TempData.ContainsKey("ProviderDescription") ? (string)TempData["ProviderDescription"] : string.Empty ,
                 CancelLink = Url.RouteUrl(RouteNames.GetProviderDetails, new { ukprn = ukprn })
             };
             return View(ViewPath, providerDescriptionAddViewModel);
@@ -45,11 +48,13 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                     Ukprn = submitModel.Ukprn,
                     LegalName = submitModel.LegalName,
                     ProviderDescription = submitModel.ProviderDescription,
-                    CancelLink = Url.RouteUrl(RouteNames.GetProviderDescription)
+                    CancelLink = Url.RouteUrl(RouteNames.GetProviderDetails, new { ukprn = submitModel.Ukprn })
                 };
                 return View(ViewPath, model);
             }
-            return View(ViewPath, new ProviderDescriptionAddViewModel { Ukprn = submitModel.Ukprn, LegalName = submitModel.LegalName , ProviderDescription  = submitModel.ProviderDescription });
+            
+            TempData["ProviderDescription"] = submitModel.ProviderDescription;
+            return RedirectToRoute(RouteNames.GetReviewProviderDescription, new { submitModel.Ukprn });
         }
     }
 }
