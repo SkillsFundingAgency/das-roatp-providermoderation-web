@@ -26,11 +26,11 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Models
             vm.IsProviderHasStandard.Should().Be(queryResult.Provider.IsProviderHasStandard);
         }
 
-        [TestCase(ProviderStatusType.Active, "TestDescription", "display: none;", "display: inline;", "Submitted")]
-        [TestCase(ProviderStatusType.ActiveButNotTakingOnApprentices, "TestDescription", "display: none;", "display: inline;", "Submitted")]
-        [TestCase(ProviderStatusType.Onboarding, "TestDescription", "display: none;", "display: inline;", "Submitted")]
-        [TestCase(ProviderStatusType.Onboarding, "", "display: inline;", "display: none;", "Not submitted")]
-        public void ImplicitOperatorForApiModel_ReturnsViewModelLinks(ProviderStatusType providerStatusType, string providerDescription, string showAddLink, string showChangeLink, string providerDescriptionStatus)
+        [TestCase(ProviderStatusType.Active, "TestDescription", false, "Submitted")]
+        [TestCase(ProviderStatusType.ActiveButNotTakingOnApprentices, "TestDescription", false, "Submitted")]
+        [TestCase(ProviderStatusType.Onboarding, "TestDescription", false, "Submitted")]
+        [TestCase(ProviderStatusType.Onboarding, "", true, "Not submitted")]
+        public void ImplicitOperatorForApiModel_ReturnsViewModelLinks(ProviderStatusType providerStatusType, string providerDescription, bool showAddLink, string providerDescriptionStatus)
         {
             var queryResult  = new GetProviderQueryResult { Provider = new GetProviderResponse()};
             queryResult.Provider.ProviderStatusType = providerStatusType;
@@ -39,7 +39,6 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Models
             var vm = (ProviderSearchResultViewModel)queryResult;
 
             vm.ShowAddLink.Should().Be(showAddLink);
-            vm.ShowChangeLink.Should().Be(showChangeLink);
             vm.ProviderDescriptionStatus.Should().Be(providerDescriptionStatus);
         }
     }
