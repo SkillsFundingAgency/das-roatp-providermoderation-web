@@ -9,7 +9,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderSear
     public class ValidateUkprnTests
     {
         [TestCase(null)]
-        public void WhenUkprnEmpty_ProducesValidatonError(int? ukprn)
+        public void WhenUkprnEmpty_ProducesValidatonError(string ukprn)
         {
             var sut = new ProviderSearchSubmitModelValidator();
 
@@ -24,9 +24,9 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderSear
                   .WithErrorMessage(ProviderSearchSubmitModelValidator.UkprnEmptyMessage);
         }
 
-        [TestCase(10000000)]
-        [TestCase(100000000)]
-        public void WhenUkprnOutOfRange_ProducesValidatonError(int? ukprn)
+        [TestCase("10000000")]
+        [TestCase("100000000")]
+        public void WhenUkprnOutOfRange_ProducesValidatonError(string ukprn)
         {
             var sut = new ProviderSearchSubmitModelValidator();
 
@@ -41,9 +41,9 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderSear
                   .WithErrorMessage(ProviderSearchSubmitModelValidator.InvalidUkprnErrorMessage);
         }
 
-        [TestCase(99999998)]
-        [TestCase(12345678)]
-        public void WhenUkprnWithInRange_ProducesValidatonNoError(int? ukprn)
+        [TestCase("99999998")]
+        [TestCase("12345678")]
+        public void WhenUkprnWithInRange_ProducesValidatonNoError(string ukprn)
         {
             var sut = new ProviderSearchSubmitModelValidator();
 

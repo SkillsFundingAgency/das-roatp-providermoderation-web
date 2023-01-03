@@ -23,7 +23,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
         private Mock<IMediator> _mediator;
         private Mock<IUrlHelper> _urlHelperMock;
 
-        public const int Ukprn = 12345678;
+        public const string Ukprn = "12345678";
         public const string MarketingInfo = "Marketing info";
         string verifyAddProviderDescriptionUrl = "http://test-AddProviderDescriptionUrl";
 

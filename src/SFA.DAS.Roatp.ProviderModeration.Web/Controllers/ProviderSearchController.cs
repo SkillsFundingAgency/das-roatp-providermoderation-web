@@ -41,7 +41,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             }
             try
             {
-                var providerSearchResult = await _mediator.Send(new GetProviderQuery(submitModel.Ukprn.GetValueOrDefault()));
+                var providerSearchResult = await _mediator.Send(new GetProviderQuery(int.Parse(submitModel.Ukprn)));
 
                 if (providerSearchResult != null && providerSearchResult.Provider.ProviderType != ProviderType.Main)
                 {
