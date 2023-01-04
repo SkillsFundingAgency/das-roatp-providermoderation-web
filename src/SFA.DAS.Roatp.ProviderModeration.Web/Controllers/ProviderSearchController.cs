@@ -41,11 +41,11 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             }
             try
             {
-                var providerSearchResult = await _mediator.Send(new GetProviderQuery(submitModel.Ukprn.GetValueOrDefault()));
+                var providerSearchResult = await _mediator.Send(new GetProviderQuery(int.Parse(submitModel.Ukprn)));
 
                 if (providerSearchResult != null && providerSearchResult.Provider.ProviderType != ProviderType.Main)
                 {
-                    ModelState.AddModelError("ProviderNotMainProvider", ProviderNotMainProvider);
+                    ModelState.AddModelError("Ukprn", ProviderNotMainProvider);
                     return View("~/Views/ProviderSearch/Index.cshtml", submitModel);
                 }
                 TempData.Remove("ProviderDescription");
@@ -54,7 +54,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             catch (InvalidOperationException)
             {
                 _logger.LogError("Provider not found for ukprn {model.Ukprn}", submitModel.Ukprn);
-                ModelState.AddModelError("ProviderSearch", ProviderNotAvailable);
+                ModelState.AddModelError("Ukprn", ProviderNotAvailable);
                 return View("~/Views/ProviderSearch/Index.cshtml", submitModel);
             }
         }

@@ -73,12 +73,18 @@
                         @Html.Raw(Model.ProviderDescriptionStatus)
                     </dd>
                     <dd class="govuk-summary-list__actions" >
-                        <a class="govuk-link" href="@Model.AddProviderDescriptionLink" style='@Model.ShowAddLink'>
-                            Add<span class="govuk-visually-hidden">provider description</span>
-                        </a>
-                        <a class="govuk-link" href="@Model.ChangeProviderDescriptionLink" style='@Model.ShowChangeLink'>
-                            Change<span class="govuk-visually-hidden">provider description</span>
-                        </a>
+                        @if(Model.ShowAddLink)
+                        {
+                            <a class="govuk-link" href="@Model.AddProviderDescriptionLink" style='display: inline;'>
+                                Add<span class="govuk-visually-hidden">provider description</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="govuk-link" href="@Model.ChangeProviderDescriptionLink" style='display: inline;'>
+                                Change<span class="govuk-visually-hidden">provider description</span>
+                            </a>
+                        }
                     </dd>
                 </div>
 
