@@ -5,8 +5,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Validators
 {
     public class ProviderDescriptionAddSubmitModelValidator : AbstractValidator<ProviderDescriptionAddSubmitModel>
     {
-        public const string ProviderDescriptionEmptyMessage = "Please provide a description";
-        public const string ProviderDescriptionLengthErrorMessage = "Provide description maximum 750 characters";
+        public const string ProviderDescriptionEmptyMessage = "Enter provider description";
+        public const string ProviderDescriptionLengthErrorMessage = "Provider description must be 750 characters or less";
         public ProviderDescriptionAddSubmitModelValidator()
         {
             RuleFor(x => x.ProviderDescription)

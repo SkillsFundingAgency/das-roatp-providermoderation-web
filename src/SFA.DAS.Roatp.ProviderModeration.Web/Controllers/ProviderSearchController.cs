@@ -14,8 +14,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
     {
         private readonly IMediator _mediator;
         private readonly ILogger<ProviderSearchController> _logger;
-        public const string ProviderNotAvailable = "no provider has been found";
-        public const string ProviderNotMainProvider = "this provider is not valid";
+        public const string ProviderNotAvailable = "This UKPRN could not be found. This is because the UKPRN does not exist or is inactive on the UK Register of Learning Providers.";
         public ProviderSearchController(IMediator mediator, ILogger<ProviderSearchController> logger)
         {
             _mediator = mediator;
@@ -45,7 +44,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
 
                 if (providerSearchResult != null && providerSearchResult.Provider.ProviderType != ProviderType.Main)
                 {
-                    ModelState.AddModelError("ProviderNotMainProvider", ProviderNotMainProvider);
+                    ModelState.AddModelError("Ukprn", ProviderNotAvailable);
                     return View("~/Views/ProviderSearch/Index.cshtml", submitModel);
                 }
                 TempData.Remove("ProviderDescription");
@@ -54,7 +53,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             catch (InvalidOperationException)
             {
                 _logger.LogError("Provider not found for ukprn {model.Ukprn}", submitModel.Ukprn);
-                ModelState.AddModelError("ProviderSearch", ProviderNotAvailable);
+                ModelState.AddModelError("Ukprn", ProviderNotAvailable);
                 return View("~/Views/ProviderSearch/Index.cshtml", submitModel);
             }
         }
