@@ -12,8 +12,16 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Validators
             RuleFor(x => x.Ukprn)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(UkprnEmptyMessage)
-                .GreaterThan(10000000).WithMessage(InvalidUkprnErrorMessage)
-                .LessThan(99999999).WithMessage(InvalidUkprnErrorMessage);
+                .Must(BeAValidInt).WithMessage(InvalidUkprnErrorMessage)
+                .Must(BeAValidUkprn).WithMessage(InvalidUkprnErrorMessage);
+        }
+        private bool BeAValidInt(string ukprnInput)
+        {
+            return int.TryParse(ukprnInput.ToString(), out _);
+        }
+        private bool BeAValidUkprn(string ukprnInput)
+        {
+            return int.Parse(ukprnInput.ToString()) > 10000000 && int.Parse(ukprnInput.ToString()) < 99999999;
         }
     }
 }
