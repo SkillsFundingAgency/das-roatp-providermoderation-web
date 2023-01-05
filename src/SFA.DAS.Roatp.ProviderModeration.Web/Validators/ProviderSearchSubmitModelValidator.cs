@@ -5,8 +5,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Validators
 {
     public class ProviderSearchSubmitModelValidator : AbstractValidator<ProviderSearchSubmitModel>
     {
-        public const string UkprnEmptyMessage = "You must enter a valid UKPRN";
-        public const string InvalidUkprnErrorMessage = "You have entered an invalid UKPRN";
+        public const string UkprnEmptyMessage = "Enter a UKPRN";
+        public const string InvalidUkprnErrorMessage = "Enter a UKPRN using 8 numbers";
         public ProviderSearchSubmitModelValidator()
         {
             RuleFor(x => x.Ukprn)
