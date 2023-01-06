@@ -42,7 +42,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             {
                 var providerSearchResult = await _mediator.Send(new GetProviderQuery(int.Parse(submitModel.Ukprn)));
 
-                if (providerSearchResult != null && providerSearchResult.Provider.ProviderType != ProviderType.Main)
+                if (providerSearchResult != null && (providerSearchResult.Provider.ProviderType != ProviderType.Main || providerSearchResult.Provider.ProviderStatusType == ProviderStatusType.ActiveButNotTakingOnApprentices))
                 {
                     ModelState.AddModelError("Ukprn", ProviderNotAvailable);
                     return View("~/Views/ProviderSearch/Index.cshtml", submitModel);

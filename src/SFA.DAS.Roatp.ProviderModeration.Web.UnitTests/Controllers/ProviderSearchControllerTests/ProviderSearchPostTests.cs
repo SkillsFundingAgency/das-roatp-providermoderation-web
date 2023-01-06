@@ -34,7 +34,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
             var provider = new GetProviderResponse
             {
                 MarketingInfo = MarketingInfo,
-                ProviderType = ProviderType.Main
+                ProviderType = ProviderType.Main,
+                ProviderStatusType = ProviderStatusType.Active,
             };
             _mediator = new Mock<IMediator>();
             _mediator.Setup(x => x.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()))
@@ -57,28 +58,19 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
             _sut.TempData = tempData;
         }
 
-        [Test]
-        public async Task ProviderController_GetProviderDescription_ReturnsValidResponse()
-        {
-            var submitModel = new ProviderSearchSubmitModel
-            {
-                Ukprn = Ukprn
-            };
-
-            var result = await _sut.GetProviderDescription(submitModel);
-
-            var redirectResult = result as RedirectToRouteResult;
-            redirectResult.Should().NotBeNull();
-            redirectResult.RouteName.Should().Be(RouteNames.GetProviderDetails);
-        }
-
-        [Test]
-        public async Task ProviderController_GetProviderDescription_ReturnsNonValidResponse()
+        [TestCase(ProviderType.Main, ProviderStatusType.Active, true)]
+        [TestCase(ProviderType.Main, ProviderStatusType.Onboarding, true)]
+        [TestCase(ProviderType.Main, ProviderStatusType.ActiveButNotTakingOnApprentices, false)]
+        [TestCase(ProviderType.Supporting, ProviderStatusType.Active, false)]
+        [TestCase(ProviderType.Employer, ProviderStatusType.Active, false)]
+        [TestCase(ProviderType.Main, ProviderStatusType.ActiveButNotTakingOnApprentices, false)]
+        public async Task ProviderController_GetProviderDescription_ReturnsResponse(ProviderType providerType, ProviderStatusType providerStatusType, bool isValidToDisplayProviderResponse)
         {
             var provider = new GetProviderResponse
             {
                 MarketingInfo = MarketingInfo,
-                ProviderType = ProviderType.Supporting
+                ProviderType = providerType,
+                ProviderStatusType = providerStatusType,
             };
             _mediator.Setup(x => x.Send(It.IsAny<GetProviderQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => new GetProviderQueryResult
@@ -86,19 +78,26 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
                     Provider = provider
                 });
 
-            _sut = new ProviderSearchController(_mediator.Object, _logger.Object);
-
-            var model = new ProviderSearchSubmitModel
+            var submitModel = new ProviderSearchSubmitModel
             {
                 Ukprn = Ukprn
             };
 
-            var result = await _sut.GetProviderDescription(model);
+            var result = await _sut.GetProviderDescription(submitModel);
 
-            var viewResult = result as ViewResult;
-            viewResult.Should().NotBeNull();
-            viewResult?.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
-            viewResult?.Model.Should().NotBeNull();
+            if(isValidToDisplayProviderResponse)
+            {
+                var redirectResult = result as RedirectToRouteResult;
+                redirectResult.Should().NotBeNull();
+                redirectResult.RouteName.Should().Be(RouteNames.GetProviderDetails);
+            }
+            else
+            {
+                var viewResult = result as ViewResult;
+                viewResult.Should().NotBeNull();
+                viewResult?.ViewName.Should().Contain("ProviderSearch/Index.cshtml");
+                viewResult?.Model.Should().NotBeNull();
+            }
         }
 
         [Test]
