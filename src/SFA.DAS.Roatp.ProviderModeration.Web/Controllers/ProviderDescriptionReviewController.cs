@@ -22,8 +22,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         }
 
         [HttpGet]
-        [Route("providers/{ukprn}/review-provider-description", Name = RouteNames.GetReviewProviderDescription)]
-        public async Task<IActionResult> Index([FromRoute] int ukprn)
+        [Route("providers/{ukprn}/review-provider-description/{mode}", Name = RouteNames.GetReviewProviderDescription)]
+        public async Task<IActionResult> Index([FromRoute] int ukprn, [FromRoute] ProviderDescriptionMode mode)
         {
             var providerSearchResult = await _mediator.Send(new GetProviderQuery(ukprn));
 
@@ -35,23 +35,24 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                 LegalName = providerSearchResult.Provider.LegalName,
                 ProviderDescription = providerDescriptionTempData,
                 CancelLink = Url.RouteUrl(RouteNames.GetProviderDetails, new { ukprn }),
-                EditEntry = Url.RouteUrl(RouteNames.GetReviewProviderDescriptionEdit, new { ukprn }),
-                
+                EditEntry = Url.RouteUrl(RouteNames.GetReviewProviderDescriptionEdit, new { ukprn, mode }),
             };
             return View(ViewPath, providerDescriptionReviewViewModel);
         }
 
         [HttpGet]
-        [Route("providers/{ukprn}/review-provider-description-edit", Name = RouteNames.GetReviewProviderDescriptionEdit)]
-        public IActionResult EditEntry([FromRoute] int ukprn)
+        [Route("providers/{ukprn}/review-provider-description-edit/{mode}", Name = RouteNames.GetReviewProviderDescriptionEdit)]
+        public IActionResult EditEntry([FromRoute] int ukprn, [FromRoute] ProviderDescriptionMode mode)
         {
             TempData.Keep("ProviderDescription");
-            return RedirectToRoute(RouteNames.GetAddProviderDescription, new { ukprn });
+            return mode == ProviderDescriptionMode.Add
+                ? RedirectToRoute(RouteNames.GetAddProviderDescription, new { ukprn })
+                : (IActionResult)RedirectToRoute(RouteNames.GetUpdateProviderDescription, new { ukprn });
         }
 
         [HttpPost]
-        [Route("providers/{ukprn}/review-provider-description", Name = RouteNames.PostReviewProviderDescription)]
-        public async Task<IActionResult> ReviewProviderDescription(ProviderDescriptionReviewViewModel submitModel)
+        [Route("providers/{ukprn}/review-provider-description/{mode}", Name = RouteNames.PostReviewProviderDescription)]
+        public async Task<IActionResult> ReviewProviderDescription(ProviderDescriptionReviewViewModel submitModel, [FromRoute] ProviderDescriptionMode mode)
         {
             _logger.LogInformation("Provider description updating for {ukprn}", submitModel.Ukprn);
             TempData.Remove("ProviderDescription");

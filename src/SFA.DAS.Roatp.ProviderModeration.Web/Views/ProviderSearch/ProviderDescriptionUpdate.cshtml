@@ -1,0 +1,33 @@
+﻿@model SFA.DAS.Roatp.ProviderModeration.Web.Models.ProviderDescriptionUpdateViewModel
+@using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure
+@{
+    ViewBag.Title = "Update provider description";
+}
+
+<a class="govuk-back-link" href="@Model.CancelLink">Back</a>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_validationSummary" /> 
+        <h1 class="govuk-heading-xl">Update the provider description for @Model.LegalName</h1>
+
+        <form method="post" asp-route="@RouteNames.PostUpdateProviderDescription" enctype="multipart/form-data" novalidate>
+            <input type="hidden" asp-for="@Model.Ukprn" />
+            <input type="hidden" asp-for="@Model.LegalName" />
+            <input type="hidden" asp-for="@Model.ExistingProviderDescription" />
+            <h4 class="govuk-heading-s">The current live description is as follows:</h4>
+            <p>@Model.ExistingProviderDescription</p>
+            <div esfa-validation-marker-for="ProviderDescription" class="govuk-form-group">
+                <h4 class="govuk-heading-s">To update this , please copy and paste the updated description:</h4>
+                <span asp-validation-for="ProviderDescription" class="govuk-error-message"></span>
+                <textarea class="govuk-textarea" id="ProviderDescription" name="ProviderDescription" rows="10" asp-for="ProviderDescription" aria-describedby="ProviderDescription" sfa-validation-for="ProviderDescription" sfa-validationerror-class="govuk-textarea--error-override">@Model.ProviderDescription</textarea>
+                <label class="govuk-label">
+                    Maximum 750 characters
+                </label>
+            </div>
+            <div class="govuk-button-group">
+                <button id="submit" type="submit" class="govuk-button">Continue</button>
+                <a href="@Model.CancelLink" class="govuk-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

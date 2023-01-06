@@ -13,8 +13,6 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
     {
         private readonly IMediator _mediator;
         private readonly ILogger<ProviderSearchResultsController> _logger;
-        public const string ProviderNotAvailable = "no provider has been found";
-        public const string ProviderNotMainProvider = "this provider is not valid";
         public ProviderSearchResultsController(IMediator mediator, ILogger<ProviderSearchResultsController> logger)
         {
             _mediator = mediator;
@@ -32,7 +30,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             if (resultModel != null)
             {
                 resultModel.AddProviderDescriptionLink = Url.RouteUrl(RouteNames.GetAddProviderDescription, new { ukprn = ukprn });
-                resultModel.ChangeProviderDescriptionLink = Url.RouteUrl(RouteNames.GetAddProviderDescription, new { ukprn = ukprn });
+                resultModel.ChangeProviderDescriptionLink = Url.RouteUrl(RouteNames.GetUpdateProviderDescription, new { ukprn = ukprn });
             }
             return View("~/Views/ProviderSearch/SearchResults.cshtml", resultModel);
         }

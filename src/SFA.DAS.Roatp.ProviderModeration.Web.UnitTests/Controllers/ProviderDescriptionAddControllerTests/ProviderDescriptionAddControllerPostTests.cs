@@ -46,7 +46,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
         [Test]
         public void ProviderDescriptionAddController_AddProviderDescription_ValidResponseRedirectToRoute()
         {
-            var submitModel = new ProviderDescriptionAddSubmitModel
+            var submitModel = new ProviderDescriptionSubmitModel
             {
                 Ukprn = Ukprn,
                 LegalName = LegalName,
@@ -70,7 +70,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
         {
             _sut.ModelState.AddModelError("ProviderDescription", "ErrorMessageEmptyString");
 
-            var submitModel = new ProviderDescriptionAddSubmitModel
+            var submitModel = new ProviderDescriptionSubmitModel
             {
                 Ukprn = Ukprn,
                 LegalName = LegalName,

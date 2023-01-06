@@ -5,13 +5,15 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure
     [ExcludeFromCodeCoverage]
     public static class RouteNames
     {
-        public const string GetProviderDescription = "provider-description";
-        public const string PostProviderDescription = "provider-description";
-        public const string GetProviderDetails = "provider-details";
-        public const string GetAddProviderDescription = "add-provider-description";
-        public const string PostAddProviderDescription = "add-provider-description";
-        public const string GetReviewProviderDescription = "review-provider-description";
-        public const string GetReviewProviderDescriptionEdit = "edit-review-provider-description";
-        public const string PostReviewProviderDescription = "review-provider-description";
+        public const string GetProviderDescription = "Get-provider-description";
+        public const string PostProviderDescription = "Post-provider-description";
+        public const string GetProviderDetails = "Get-provider-details";
+        public const string GetAddProviderDescription = "Get-add-provider-description";
+        public const string PostAddProviderDescription = "Post-add-provider-description";
+        public const string GetUpdateProviderDescription = "Get-update-provider-description";
+        public const string PostUpdateProviderDescription = "Post-update-provider-description";
+        public const string GetReviewProviderDescription = "Get-review-provider-description";
+        public const string GetReviewProviderDescriptionEdit = "Get-edit-review-provider-description";
+        public const string PostReviewProviderDescription = "Post-review-provider-description";
     }
 }
