@@ -6,9 +6,10 @@
     ViewBag.Title = Model.LegalName;
 }
 
-
-<a class="govuk-back-link" asp-controller="ProviderSearch" asp-action="Index">Back</a>
-
+@section BackLink
+{
+    <a class="govuk-back-link" asp-controller="ProviderSearch" asp-action="Index">Back</a>
+}
 <main class="govuk-main-wrapper " id="main-content" role="main">
 
     <div class="govuk-grid-row">

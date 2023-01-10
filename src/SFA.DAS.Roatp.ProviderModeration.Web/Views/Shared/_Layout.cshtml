@@ -79,8 +79,11 @@
         </div>
     }
 
-    <div class="govuk-width-container ">
-        @RenderBody()
+    <div class="govuk-width-container">
+        @RenderSection("BackLink", required: false)
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            @RenderBody()
+        </main>
     </div>
 
     <footer class="govuk-footer " role="contentinfo">

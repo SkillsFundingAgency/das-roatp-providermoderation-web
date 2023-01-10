@@ -3,8 +3,11 @@
 @{
     ViewBag.Title = "Update provider description";
 }
+@section BackLink
+{
+    <a class="govuk-back-link" href="@Model.CancelLink">Back</a>
+}
 
-<a class="govuk-back-link" href="@Model.CancelLink">Back</a>
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_validationSummary" /> 

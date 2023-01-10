@@ -4,7 +4,10 @@
     ViewBag.Title = "Add provider description";
 }
 
-<a class="govuk-back-link" href="@Model.CancelLink">Back</a>
+@section BackLink
+{
+    <a class="govuk-back-link" href="@Model.CancelLink">Back</a>
+}
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_validationSummary" /> 
