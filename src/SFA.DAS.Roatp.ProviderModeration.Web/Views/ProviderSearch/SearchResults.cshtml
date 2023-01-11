@@ -10,10 +10,9 @@
 {
     <a class="govuk-back-link" asp-controller="ProviderSearch" asp-action="Index">Back</a>
 }
-<main class="govuk-main-wrapper " id="main-content" role="main">
-
-    <div class="govuk-grid-row">
+<div class="govuk-grid-row">
         <div id="providerSearchResults" class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Provider details for @Model.LegalName</h1>
             <dl class="govuk-summary-list">
 
                 <div class="govuk-summary-list__row">
@@ -23,7 +22,7 @@
                     <dd class="govuk-summary-list__value">
                         @Html.Raw(Model.LegalName)
                     </dd>
-                    <dd class="govuk-summary-list__actions" ></dd>
+                    <dd class="govuk-summary-list__actions"></dd>
                 </div>
 
                 <div class="govuk-summary-list__row">
@@ -33,7 +32,7 @@
                     <dd class="govuk-summary-list__value">
                         @Html.Raw(Model.Ukprn)
                     </dd>
-                    <dd class="govuk-summary-list__actions" ></dd>
+                    <dd class="govuk-summary-list__actions"></dd>
                 </div>
 
                 <div class="govuk-summary-list__row">
@@ -43,7 +42,7 @@
                     <dd class="govuk-summary-list__value">
                         @Html.ToProviderStatus(Model)
                     </dd>
-                    <dd class="govuk-summary-list__actions" ></dd>
+                    <dd class="govuk-summary-list__actions"></dd>
                 </div>
 
                 <div class="govuk-summary-list__row">
@@ -53,9 +52,9 @@
                     <dd class="govuk-summary-list__value">
                         @Html.ToProviderType(Model)
                     </dd>
-                    <dd class="govuk-summary-list__actions" ></dd>
+                    <dd class="govuk-summary-list__actions"></dd>
                 </div>
-              
+
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
                         Does the provider have a standard
@@ -63,7 +62,7 @@
                     <dd class="govuk-summary-list__value">
                         @Html.ToBooleanYesNo(Model.IsProviderHasStandard)
                     </dd>
-                    <dd class="govuk-summary-list__actions" ></dd>
+                    <dd class="govuk-summary-list__actions"></dd>
                 </div>
 
                 <div class="govuk-summary-list__row">
@@ -73,23 +72,21 @@
                     <dd class="govuk-summary-list__value">
                         @Html.Raw(Model.ProviderDescriptionStatus)
                     </dd>
-                    <dd class="govuk-summary-list__actions" >
-                        @if(Model.ShowAddLink)
-                        {
-                            <a class="govuk-link" href="@Model.AddProviderDescriptionLink" style='display: inline;'>
-                                Add<span class="govuk-visually-hidden">provider description</span>
-                            </a>
-                        }
-                        else
-                        {
-                            <a class="govuk-link" href="@Model.ChangeProviderDescriptionLink" style='display: inline;'>
-                                Change<span class="govuk-visually-hidden">provider description</span>
-                            </a>
-                        }
-                    </dd>
-                </div>
-
-            </dl>
-        </div>
+                    <dd class="govuk-summary-list__actions">
+                    @if (Model.ShowAddLink)
+                    {
+                        <a class="govuk-link" href="@Model.AddProviderDescriptionLink" style='display: inline;'>
+                            Add<span class="govuk-visually-hidden">provider description</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="govuk-link" href="@Model.ChangeProviderDescriptionLink" style='display: inline;'>
+                            Change<span class="govuk-visually-hidden">provider description</span>
+                        </a>
+                    }
+                </dd>
+            </div>
+        </dl>
     </div>
-</main>
+</div>
