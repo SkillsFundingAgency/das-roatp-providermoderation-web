@@ -19,7 +19,7 @@
     <!--[if !IE 8]><!-->
     <link href="/css/main.css" rel="stylesheet" />
     <!--<![endif]-->
-    <link href="/stylesheets/application.css" rel="stylesheet" no-cdn />
+    <link href="/css/app.css" rel="stylesheet" no-cdn />
 
     <meta property="og:image" content="/assets/images/govuk-opengraph-image.png" />
 
@@ -62,25 +62,28 @@
 
     @if (User.Identity.IsAuthenticated)
     {
-        <div class="das-user-panel">
+        <div class="app-user-panel">
             <div class="govuk-width-container">
-                <div class="das-user-panel__content">
-                    <span class="govuk-body-s das-user-panel__item das-user-panel__item--grow">
-                        <p class="govuk-!-margin-top-0 govuk-!-margin-bottom-0 das-no-wrap">
+                <div class="app-user-panel__content">
+                    <span class="govuk-body-s app-user-panel__item app-user-panel__item--grow">
+                        <p class="app-user-panel__user das-no-wrap">
                             <span class="govuk-visually-hidden">Signed in as </span>
                             @User.UserDisplayName()
                         </p>
                     </span>
-                    <span class="govuk-body-s das-user-panel__item">
-                        <a class="govuk-link govuk-link--white" asp-controller="Account" asp-action="SignOut">Sign out</a>
+                    <span class="govuk-body-s app-user-panel__item">
+                        <a class="govuk-link govuk-link--inverse" asp-controller="Account" asp-action="SignOut">Sign out</a>
                     </span>
                 </div>
             </div>
         </div>
     }
 
-    <div class="govuk-width-container ">
-        @RenderBody()
+    <div class="govuk-width-container">
+        @RenderSection("BackLink", required: false)
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            @RenderBody()
+        </main>
     </div>
 
     <footer class="govuk-footer " role="contentinfo">

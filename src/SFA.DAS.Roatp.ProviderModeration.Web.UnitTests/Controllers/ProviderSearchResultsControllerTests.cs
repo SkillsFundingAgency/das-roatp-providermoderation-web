@@ -21,7 +21,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
         private Mock<IMediator> _mediatorMock;
         private ProviderSearchResultsController _sut;
         private Mock<IUrlHelper> _urlHelperMock;
-        string verifyUrl = "http://test";
+        string addProviderDescriptionUrl = "http://test/AddProviderDescriptionUrl";
+        string updateProviderDescriptionUrl = "http://test/UpdateProviderDescriptionUrl";
 
         [SetUp]
         public void Before_Each_Test()
@@ -32,7 +33,11 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
 
             _urlHelperMock
                .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName.Equals(RouteNames.GetAddProviderDescription))))
-               .Returns(verifyUrl);
+               .Returns(addProviderDescriptionUrl);
+
+            _urlHelperMock
+               .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName.Equals(RouteNames.GetUpdateProviderDescription))))
+               .Returns(updateProviderDescriptionUrl);
 
             _sut = new ProviderSearchResultsController(_mediatorMock.Object, Mock.Of<ILogger<ProviderSearchResultsController>>());
             _sut.Url = _urlHelperMock.Object;
@@ -58,8 +63,8 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
             viewResult?.ViewName.Should().Contain("ProviderSearch/SearchResults.cshtml");
             var model = viewResult.Model as ProviderSearchResultViewModel;
             model.Should().NotBeNull();
-            model.AddProviderDescriptionLink.Should().Be(verifyUrl);
-            model.ChangeProviderDescriptionLink.Should().Be(verifyUrl);
+            model.AddProviderDescriptionLink.Should().Be(addProviderDescriptionUrl);
+            model.ChangeProviderDescriptionLink.Should().Be(updateProviderDescriptionUrl);
         }
     }
 }

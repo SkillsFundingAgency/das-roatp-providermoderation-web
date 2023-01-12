@@ -11,18 +11,19 @@ using SFA.DAS.Roatp.ProviderModeration.Web.Controllers;
 using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
-namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDescriptionAddControllerTests
+namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDescriptionUpdateControllerTests
 {
     [TestFixture]
-    public class ProviderDescriptionAddControllerPostTests
+    public class ProviderDescriptionUpdateControllerPostTests
     {
         private Mock<IMediator> _mediatorMock;
-        private ProviderDescriptionAddController _sut;
+        private ProviderDescriptionUpdateController _sut;
         private Mock<IUrlHelper> _urlHelperMock;
         string verifyUrl = "http://test";
         public const int Ukprn = 12345678;
         public const string LegalName = "TestLegalName";
-        public const string ProviderDescription = "TestProviderDescription";
+        public const string ExistingProviderDescription = "TestProviderDescription-existing";
+        public const string ProviderDescription = "TestProviderDescription-updated";
 
         [SetUp]
         public void Before_Each_Test()
@@ -39,17 +40,18 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
                .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName.Equals(RouteNames.GetProviderDetails))))
                .Returns(verifyUrl);
 
-            _sut = new ProviderDescriptionAddController(_mediatorMock.Object, Mock.Of<ILogger<ProviderDescriptionAddController>>());
+            _sut = new ProviderDescriptionUpdateController(_mediatorMock.Object, Mock.Of<ILogger<ProviderDescriptionUpdateController>>());
             _sut.Url = _urlHelperMock.Object;
         }
 
         [Test]
-        public void ProviderDescriptionAddController_AddProviderDescription_ValidResponseRedirectToRoute()
+        public void ProviderDescriptionUpdateController_UpdateProviderDescription_ValidResponseRedirectToRoute()
         {
             var submitModel = new ProviderDescriptionSubmitModel
             {
                 Ukprn = Ukprn,
                 LegalName = LegalName,
+                ExistingProviderDescription = ExistingProviderDescription,
                 ProviderDescription = ProviderDescription
             };
 
@@ -58,7 +60,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             tempData["ProviderDescription"] = submitModel.ProviderDescription;
             _sut.TempData = tempData;
 
-            var result = _sut.AddProviderDescription(submitModel);
+            var result = _sut.UpdateProviderDescription(submitModel);
 
             var redirectResult = result as RedirectToRouteResult;
             redirectResult.Should().NotBeNull();
@@ -66,7 +68,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
         }
 
         [Test]
-        public void ProviderDescriptionAddController_AddProviderDescription_ModelStateErrorReturnSameView()
+        public void ProviderDescriptionUpdateController_UpdateProviderDescription_ModelStateErrorReturnSameView()
         {
             _sut.ModelState.AddModelError("ProviderDescription", "ErrorMessageEmptyString");
 
@@ -74,17 +76,19 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             {
                 Ukprn = Ukprn,
                 LegalName = LegalName,
+                ExistingProviderDescription = ExistingProviderDescription,
                 ProviderDescription = string.Empty
             };
-            var result = _sut.AddProviderDescription(submitModel);
+            var result = _sut.UpdateProviderDescription(submitModel);
 
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
-            viewResult.ViewName.Should().Contain(ProviderDescriptionAddController.ViewPath);
-            var model = viewResult.Model as ProviderDescriptionAddViewModel;
+            viewResult.ViewName.Should().Contain(ProviderDescriptionUpdateController.ViewPath);
+            var model = viewResult.Model as ProviderDescriptionUpdateViewModel;
             model.Should().NotBeNull();
             model.Ukprn.Should().Be(submitModel.Ukprn);
             model.LegalName.Should().Be(submitModel.LegalName);
+            model.ExistingProviderDescription.Should().Be(submitModel.ExistingProviderDescription);
             model.ProviderDescription.Should().Be(submitModel.ProviderDescription);
             model.CancelLink.Should().Be(verifyUrl);
         }

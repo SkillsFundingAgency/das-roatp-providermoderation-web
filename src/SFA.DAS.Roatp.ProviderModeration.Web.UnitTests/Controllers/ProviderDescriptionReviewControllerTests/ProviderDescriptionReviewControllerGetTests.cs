@@ -56,7 +56,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
                 .Setup(m => m.Send(It.Is<GetProviderQuery>(q => q.Ukprn == ukprn), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(providerQueryResult);
 
-            var result = await _sut.Index(ukprn);
+            var result = await _sut.Index(ukprn, ProviderDescriptionMode.Add);
 
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
@@ -68,14 +68,25 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
         }
 
         [Test, AutoData]
-        public void EditEntry_ValidRequest_ReturnsView(
+        public void EditEntry_ValidRequestAddProviderDescription_ReturnsAddProviderDescriptionView(
            int ukprn)
         {
-            var result = _sut.EditEntry(ukprn);
+            var result = _sut.EditEntry(ukprn, ProviderDescriptionMode.Add);
 
             var redirectResult = result as RedirectToRouteResult;
             redirectResult.Should().NotBeNull();
             redirectResult.RouteName.Should().Be(RouteNames.GetAddProviderDescription);
+        }
+
+        [Test, AutoData]
+        public void EditEntry_ValidRequestUpdateProviderDescription_ReturnsUpdateProviderDescriptionView(
+           int ukprn)
+        {
+            var result = _sut.EditEntry(ukprn, ProviderDescriptionMode.Update);
+
+            var redirectResult = result as RedirectToRouteResult;
+            redirectResult.Should().NotBeNull();
+            redirectResult.RouteName.Should().Be(RouteNames.GetUpdateProviderDescription);
         }
     }
 }

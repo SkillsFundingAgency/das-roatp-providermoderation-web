@@ -65,7 +65,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             tempData["ProviderDescription"] = submitModel.ProviderDescription;
             _sut.TempData = tempData;
 
-            var result = await _sut.ReviewProviderDescription(submitModel);
+            var result = await _sut.ReviewProviderDescription(submitModel, ProviderDescriptionMode.Add);
 
             var redirectResult = result as RedirectToRouteResult;
             redirectResult.Should().NotBeNull();
