@@ -1,6 +1,5 @@
 using FluentValidation.AspNetCore;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using NLog.Web;
 using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
@@ -65,6 +64,8 @@ public static class Program
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
+
+        app.UseHealthChecks();
 
         app.UseEndpoints(endpoints =>
         {
