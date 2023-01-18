@@ -67,7 +67,6 @@ public static class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
-
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllerRoute(
