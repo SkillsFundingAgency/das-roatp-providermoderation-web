@@ -1,6 +1,5 @@
 using FluentValidation.AspNetCore;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using NLog.Web;
 using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
@@ -43,6 +42,7 @@ public static class Program
             .AddAuthentication(builder.Configuration)
             .AddServiceRegistrations(builder.Configuration);
 
+        builder.Services.AddHealthChecks();
 
         //Add services above
         var app = builder.Build();
@@ -55,10 +55,12 @@ public static class Program
         }
         else
         {
+            app.UseHealthChecks();
             app.UseExceptionHandler("/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
