@@ -41,6 +41,7 @@ public static class Program
             .AddMediatR(applicationAssembly)
             .AddAuthentication(builder.Configuration)
             .AddServiceRegistrations(builder.Configuration);
+
         builder.Services.AddHealthChecks();
 
         //Add services above
