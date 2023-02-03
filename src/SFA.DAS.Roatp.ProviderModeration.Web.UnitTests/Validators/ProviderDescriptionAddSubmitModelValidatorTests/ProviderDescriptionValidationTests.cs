@@ -42,7 +42,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderDesc
         }
 
         [Test]
-        public void WhenValid_ShouldNotHaveErrorForEmail()
+        public void WhenValid_ShouldNotHaveErrorForProviderDescription()
         {
             string providerDescription = new string('*', 750);
             var sut = new ProviderDescriptionSubmitModelValidator();
@@ -55,6 +55,22 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderDesc
             var result = sut.TestValidate(submitModel);
 
             result.ShouldNotHaveValidationErrorFor(c => c.ProviderDescription);
+        }
+
+        [Test]
+        public void WhenInValid_ShouldHaveErrorForProviderDescription()
+        {
+            string providerDescription = @"!@£$%^&*()_<>";
+            var sut = new ProviderDescriptionSubmitModelValidator();
+
+            var submitModel = new ProviderDescriptionSubmitModel()
+            {
+                ProviderDescription = providerDescription
+            };
+
+            var result = sut.TestValidate(submitModel);
+
+            result.ShouldHaveValidationErrorFor(c => c.ProviderDescription);
         }
     }
 }
