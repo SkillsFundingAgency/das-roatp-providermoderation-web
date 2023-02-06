@@ -57,10 +57,16 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderDesc
             result.ShouldNotHaveValidationErrorFor(c => c.ProviderDescription);
         }
 
-        [Test]
-        public void WhenInValid_ShouldHaveErrorForProviderDescription()
+        [TestCase("<")]
+        [TestCase(">")]
+        [TestCase("{")]
+        [TestCase("}")]
+        [TestCase("~")]
+        [TestCase("^")]
+        [TestCase("`")]
+        [TestCase("|")]
+        public void WhenInValidCharacter_ShouldHaveErrorForProviderDescription(string providerDescription)
         {
-            string providerDescription = @"!@£$%^&*()_<>";
             var sut = new ProviderDescriptionSubmitModelValidator();
 
             var submitModel = new ProviderDescriptionSubmitModel()
@@ -70,7 +76,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderDesc
 
             var result = sut.TestValidate(submitModel);
 
-            result.ShouldHaveValidationErrorFor(c => c.ProviderDescription);
+            result.ShouldHaveValidationErrorFor(c => c.ProviderDescription).WithErrorMessage(ProviderDescriptionSubmitModelValidator.ProviderDescriptionHasInvalidCharacter); ;
         }
     }
 }
