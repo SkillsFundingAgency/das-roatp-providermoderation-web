@@ -3,9 +3,9 @@ using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Validators
 {
-    public class ProviderDescriptionReviewViewModelValidator : AbstractValidator<ProviderDescriptionReviewViewModel>
+    public class ProviderDescriptionReviewModelValidator : AbstractValidator<ProviderDescriptionReviewViewModel>
     {
-        public ProviderDescriptionReviewViewModelValidator()
+        public ProviderDescriptionReviewModelValidator()
         {
             Include(new ProviderDescriptionSubmitModelValidator());
         }

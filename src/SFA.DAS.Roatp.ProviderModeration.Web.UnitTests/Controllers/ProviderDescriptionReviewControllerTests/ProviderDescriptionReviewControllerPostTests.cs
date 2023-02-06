@@ -71,5 +71,50 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             redirectResult.Should().NotBeNull();
             redirectResult.RouteName.Should().Be(RouteNames.GetProviderDetails);
         }
+
+        [Test]
+        public async Task ReviewProviderDescription_InValidModelStateResponseReturnsGetAddProviderDescriptionView()
+        {
+            var submitModel = new ProviderDescriptionReviewViewModel
+            {
+                Ukprn = Ukprn,
+                LegalName = LegalName,
+                ProviderDescription = ProviderDescription
+            };
+
+            var httpContext = new DefaultHttpContext();
+            var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
+            _sut.TempData = tempData;
+
+            _sut.ModelState.AddModelError("key", "message");
+
+            var result = await _sut.ReviewProviderDescription(submitModel, ProviderDescriptionMode.Add);
+
+            var redirectResult = result as RedirectToRouteResult;
+            redirectResult.Should().NotBeNull();
+            redirectResult.RouteName.Should().Be(RouteNames.GetAddProviderDescription);
+        }
+
+        [Test]
+        public async Task ReviewProviderDescription_InValidModelStateResponseReturnsGetUpdateProviderDescriptionView()
+        {
+            var submitModel = new ProviderDescriptionReviewViewModel
+            {
+                Ukprn = Ukprn,
+                LegalName = LegalName,
+                ProviderDescription = ProviderDescription
+            };
+
+            var httpContext = new DefaultHttpContext();
+            var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
+            _sut.TempData = tempData;
+            _sut.ModelState.AddModelError("key", "message");
+
+            var result = await _sut.ReviewProviderDescription(submitModel, ProviderDescriptionMode.Update);
+
+            var redirectResult = result as RedirectToRouteResult;
+            redirectResult.Should().NotBeNull();
+            redirectResult.RouteName.Should().Be(RouteNames.GetUpdateProviderDescription);
+        }
     }
 }

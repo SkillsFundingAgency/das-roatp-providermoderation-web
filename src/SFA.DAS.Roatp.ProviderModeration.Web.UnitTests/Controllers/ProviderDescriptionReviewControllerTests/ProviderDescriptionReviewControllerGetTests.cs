@@ -89,5 +89,21 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             redirectResult.Should().NotBeNull();
             redirectResult.RouteName.Should().Be(RouteNames.GetUpdateProviderDescription);
         }
+
+        [Test, AutoData]
+        public void EditEntry_InValidTempDataRequest_ReturnsGetProviderDetailsView(
+          int ukprn)
+        {
+            var tempDataMock = new Mock<ITempDataDictionary>();
+            _sut.TempData = tempDataMock.Object;
+            object providerDescriptionTempData = null;
+            tempDataMock.Setup(t => t.TryGetValue("ProviderDescription", out providerDescriptionTempData));
+
+            var result = _sut.EditEntry(ukprn, ProviderDescriptionMode.Update);
+
+            var redirectResult = result as RedirectToRouteResult;
+            redirectResult.Should().NotBeNull();
+            redirectResult.RouteName.Should().Be(RouteNames.GetProviderDetails);
+        }
     }
 }
