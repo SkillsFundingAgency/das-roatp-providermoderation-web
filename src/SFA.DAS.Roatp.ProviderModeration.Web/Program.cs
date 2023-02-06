@@ -55,7 +55,6 @@ public static class Program
         }
         else
         {
-            app.UseHealthChecks();
             app.UseExceptionHandler("/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
@@ -64,9 +63,33 @@ public static class Program
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
+        app.UseCookiePolicy();
+
+        app.Use(async (context, next) =>
+        {
+            if (context.Response.Headers.ContainsKey("X-Frame-Options"))
+            {
+                context.Response.Headers.Remove("X-Frame-Options");
+            }
+
+            context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+
+            await next();
+
+            if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
+            {
+                //Re-execute the request so the user gets the error page
+                var originalPath = context.Request.Path.Value;
+                context.Items["originalPath"] = originalPath;
+                context.Request.Path = "/error/404";
+                await next();
+            }
+        });
+
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseHealthChecks();
 
         app.UseEndpoints(endpoints =>
         {

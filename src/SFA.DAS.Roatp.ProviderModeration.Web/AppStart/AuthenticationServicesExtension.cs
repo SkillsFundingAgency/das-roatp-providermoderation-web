@@ -14,6 +14,13 @@ public static class AuthenticationServicesExtension
     {
         var authConfig = configuration.GetSection(nameof(StaffAuthenticationConfiguration)).Get<StaffAuthenticationConfiguration>();
 
+        var cookieOptions = new Action<CookieAuthenticationOptions>(options =>
+        {
+            options.CookieManager = new ChunkingCookieManager { ChunkSize = 3000 };
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            options.AccessDeniedPath = "/error/403";
+        });
+
         services
             .AddAuthentication(sharedOptions =>
             {
@@ -33,7 +40,7 @@ public static class AuthenticationServicesExtension
                     await PopulateProviderClaims(ctx.HttpContext, ctx.Principal);
                 };
             })
-            .AddCookie();
+            .AddCookie(cookieOptions);
 
         return services;
     }

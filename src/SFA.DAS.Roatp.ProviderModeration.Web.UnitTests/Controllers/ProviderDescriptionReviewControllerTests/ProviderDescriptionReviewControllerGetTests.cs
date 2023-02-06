@@ -42,9 +42,10 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             _sut = new ProviderDescriptionReviewController(_mediatorMock.Object, Mock.Of<ILogger<ProviderDescriptionReviewController>>());
             _sut.Url = _urlHelperMock.Object;
 
-            var httpContext = new DefaultHttpContext();
-            var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
-            _sut.TempData = tempData;
+            var tempDataMock = new Mock<ITempDataDictionary>();
+            _sut.TempData = tempDataMock.Object;
+            object providerDescriptionTempData = "Test";
+            tempDataMock.Setup(t => t.TryGetValue("ProviderDescription", out providerDescriptionTempData));
         }
 
         [Test, AutoData]
