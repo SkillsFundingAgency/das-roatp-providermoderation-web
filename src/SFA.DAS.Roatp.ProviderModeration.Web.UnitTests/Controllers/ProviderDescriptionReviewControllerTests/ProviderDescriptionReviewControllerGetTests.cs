@@ -69,6 +69,27 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
         }
 
         [Test, AutoData]
+        public async Task Index_ValidRequestInvalidTempData_RedirectToGetProviderDescription(
+           GetProviderQueryResult providerQueryResult,
+           int ukprn)
+        {
+            var tempDataMock = new Mock<ITempDataDictionary>();
+            _sut.TempData = tempDataMock.Object;
+            object providerDescriptionTempData = null;
+            tempDataMock.Setup(t => t.TryGetValue("ProviderDescription", out providerDescriptionTempData));
+
+            _mediatorMock
+                .Setup(m => m.Send(It.Is<GetProviderQuery>(q => q.Ukprn == ukprn), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(providerQueryResult);
+
+            var result = await _sut.Index(ukprn);
+
+            var redirectResult = result as RedirectToRouteResult;
+            redirectResult.Should().NotBeNull();
+            redirectResult.RouteName.Should().Be(RouteNames.GetProviderDescription);
+        }
+
+        [Test, AutoData]
         public async Task EditEntry_ValidRequestAddProviderDescription_ReturnsAddProviderDescriptionView(
            int ukprn)
         {
