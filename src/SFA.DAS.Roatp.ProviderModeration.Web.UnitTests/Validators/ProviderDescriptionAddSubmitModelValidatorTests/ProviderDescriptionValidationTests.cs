@@ -65,6 +65,21 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderDesc
         [TestCase("^")]
         [TestCase("`")]
         [TestCase("|")]
+        [TestCase(";")]
+        [TestCase(":")]
+        [TestCase("+")]
+        [TestCase("\\")]
+        [TestCase("-")]
+        [TestCase("=")]
+        [TestCase("_")]
+        [TestCase("$")]
+        [TestCase("@")]
+        [TestCase("#")]
+        [TestCase("€")]
+        [TestCase("£")]
+        [TestCase("[")]
+        [TestCase("]")]
+        [TestCase("|")]
         public void WhenInValidCharacter_ShouldHaveErrorForProviderDescription(string providerDescription)
         {
             var sut = new ProviderDescriptionSubmitModelValidator();
