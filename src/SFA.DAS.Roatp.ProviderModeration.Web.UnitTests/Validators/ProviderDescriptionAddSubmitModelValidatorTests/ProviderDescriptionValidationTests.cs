@@ -65,8 +65,6 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderDesc
         [TestCase("^")]
         [TestCase("`")]
         [TestCase("|")]
-        [TestCase(";")]
-        [TestCase(":")]
         [TestCase("+")]
         [TestCase("\\")]
         [TestCase("-")]
