@@ -33,7 +33,6 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             TempData.Keep("ProviderDescription");
 
             var providerSearchResult = await _mediator.Send(new GetProviderQuery(ukprn));
-            ProviderDescriptionMode mode = string.IsNullOrEmpty(providerSearchResult?.Provider?.MarketingInfo) ? ProviderDescriptionMode.Add : ProviderDescriptionMode.Update;
 
             var providerDescriptionReviewViewModel = new ProviderDescriptionReviewViewModel
             {
@@ -41,7 +40,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                 LegalName = providerSearchResult.Provider.LegalName,
                 ProviderDescription = (string)providerDescriptionTempData,
                 CancelLink = Url.RouteUrl(RouteNames.GetProviderDetails, new { ukprn }),
-                EditEntry = Url.RouteUrl(RouteNames.GetReviewProviderDescriptionEdit, new { ukprn, mode }),
+                EditEntry = Url.RouteUrl(RouteNames.GetReviewProviderDescriptionEdit, new { ukprn }),
             };
             return View(ViewPath, providerDescriptionReviewViewModel);
         }
@@ -57,13 +56,11 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             }
             TempData.Keep("ProviderDescription");
 
-
             var providerSearchResult = await _mediator.Send(new GetProviderQuery(ukprn));
-            ProviderDescriptionMode mode = string.IsNullOrEmpty(providerSearchResult?.Provider?.MarketingInfo) ? ProviderDescriptionMode.Add : ProviderDescriptionMode.Update;
 
-            return mode == ProviderDescriptionMode.Add
+            return string.IsNullOrEmpty(providerSearchResult?.Provider?.MarketingInfo)
                 ? RedirectToRoute(RouteNames.GetAddProviderDescription, new { ukprn })
-                : (IActionResult)RedirectToRoute(RouteNames.GetUpdateProviderDescription, new { ukprn });
+                : RedirectToRoute(RouteNames.GetUpdateProviderDescription, new { ukprn });
         }
 
         [HttpPost]
