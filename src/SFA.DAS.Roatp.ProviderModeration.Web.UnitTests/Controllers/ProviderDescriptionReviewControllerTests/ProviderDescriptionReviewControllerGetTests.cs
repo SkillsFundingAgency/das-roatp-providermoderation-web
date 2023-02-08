@@ -1,7 +1,6 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
+using SFA.DAS.Roatp.ProviderModeration.Domain.ApiModels;
 using SFA.DAS.Roatp.ProviderModeration.Web.Controllers;
 using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
@@ -57,7 +57,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
                 .Setup(m => m.Send(It.Is<GetProviderQuery>(q => q.Ukprn == ukprn), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(providerQueryResult);
 
-            var result = await _sut.Index(ukprn, ProviderDescriptionMode.Add);
+            var result = await _sut.Index(ukprn);
 
             var viewResult = result as ViewResult;
             viewResult.Should().NotBeNull();
@@ -69,10 +69,14 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
         }
 
         [Test, AutoData]
-        public void EditEntry_ValidRequestAddProviderDescription_ReturnsAddProviderDescriptionView(
+        public async Task EditEntry_ValidRequestAddProviderDescription_ReturnsAddProviderDescriptionView(
            int ukprn)
         {
-            var result = _sut.EditEntry(ukprn, ProviderDescriptionMode.Add);
+            _mediatorMock
+                .Setup(m => m.Send(It.Is<GetProviderQuery>(q => q.Ukprn == ukprn), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GetProviderQueryResult {  Provider = new GetProviderResponse { MarketingInfo = "", ProviderType = ProviderType.Main, ProviderStatusType = ProviderStatusType.Onboarding} });
+
+            var result = await _sut.EditEntry(ukprn);
 
             var redirectResult = result as RedirectToRouteResult;
             redirectResult.Should().NotBeNull();
@@ -80,10 +84,14 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
         }
 
         [Test, AutoData]
-        public void EditEntry_ValidRequestUpdateProviderDescription_ReturnsUpdateProviderDescriptionView(
+        public async Task EditEntry_ValidRequestUpdateProviderDescription_ReturnsUpdateProviderDescriptionView(
            int ukprn)
         {
-            var result = _sut.EditEntry(ukprn, ProviderDescriptionMode.Update);
+            _mediatorMock
+               .Setup(m => m.Send(It.Is<GetProviderQuery>(q => q.Ukprn == ukprn), It.IsAny<CancellationToken>()))
+               .ReturnsAsync(new GetProviderQueryResult { Provider = new GetProviderResponse { MarketingInfo = "Test", ProviderType = ProviderType.Main, ProviderStatusType = ProviderStatusType.Active } });
+
+            var result = await _sut.EditEntry(ukprn);
 
             var redirectResult = result as RedirectToRouteResult;
             redirectResult.Should().NotBeNull();
@@ -91,7 +99,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
         }
 
         [Test, AutoData]
-        public void EditEntry_InValidTempDataRequest_ReturnsGetProviderDetailsView(
+        public async Task EditEntry_InValidTempDataRequest_ReturnsGetProviderDetailsView(
           int ukprn)
         {
             var tempDataMock = new Mock<ITempDataDictionary>();
@@ -99,11 +107,11 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             object providerDescriptionTempData = null;
             tempDataMock.Setup(t => t.TryGetValue("ProviderDescription", out providerDescriptionTempData));
 
-            var result = _sut.EditEntry(ukprn, ProviderDescriptionMode.Update);
+            var result = await _sut.EditEntry(ukprn);
 
             var redirectResult = result as RedirectToRouteResult;
             redirectResult.Should().NotBeNull();
-            redirectResult.RouteName.Should().Be(RouteNames.GetProviderDetails);
+            redirectResult.RouteName.Should().Be(RouteNames.GetProviderDescription);
         }
     }
 }
