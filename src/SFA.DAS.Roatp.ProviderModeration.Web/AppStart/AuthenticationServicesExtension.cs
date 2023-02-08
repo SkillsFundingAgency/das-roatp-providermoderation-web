@@ -16,9 +16,7 @@ public static class AuthenticationServicesExtension
 
         var cookieOptions = new Action<CookieAuthenticationOptions>(options =>
         {
-            options.CookieManager = new ChunkingCookieManager { ChunkSize = 3000 };
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            options.AccessDeniedPath = "/error/403";
         });
 
         services
