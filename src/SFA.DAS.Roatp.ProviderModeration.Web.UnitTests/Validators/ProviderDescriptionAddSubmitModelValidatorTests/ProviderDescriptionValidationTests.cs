@@ -42,7 +42,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderDesc
         }
 
         [Test]
-        public void WhenValid_ShouldNotHaveErrorForEmail()
+        public void WhenValid_ShouldNotHaveErrorForProviderDescription()
         {
             string providerDescription = new string('*', 750);
             var sut = new ProviderDescriptionSubmitModelValidator();
@@ -55,6 +55,41 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderDesc
             var result = sut.TestValidate(submitModel);
 
             result.ShouldNotHaveValidationErrorFor(c => c.ProviderDescription);
+        }
+
+        [TestCase("<")]
+        [TestCase(">")]
+        [TestCase("{")]
+        [TestCase("}")]
+        [TestCase("~")]
+        [TestCase("^")]
+        [TestCase("`")]
+        [TestCase("|")]
+        [TestCase("+")]
+        [TestCase("\\")]
+        [TestCase("-")]
+        [TestCase("=")]
+        [TestCase("_")]
+        [TestCase("$")]
+        [TestCase("@")]
+        [TestCase("#")]
+        [TestCase("€")]
+        [TestCase("£")]
+        [TestCase("[")]
+        [TestCase("]")]
+        [TestCase("|")]
+        public void WhenInValidCharacter_ShouldHaveErrorForProviderDescription(string providerDescription)
+        {
+            var sut = new ProviderDescriptionSubmitModelValidator();
+
+            var submitModel = new ProviderDescriptionSubmitModel()
+            {
+                ProviderDescription = providerDescription
+            };
+
+            var result = sut.TestValidate(submitModel);
+
+            result.ShouldHaveValidationErrorFor(c => c.ProviderDescription).WithErrorMessage(ProviderDescriptionSubmitModelValidator.ProviderDescriptionHasInvalidCharacter); ;
         }
     }
 }
