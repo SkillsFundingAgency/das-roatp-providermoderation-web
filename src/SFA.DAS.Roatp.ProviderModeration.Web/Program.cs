@@ -1,10 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using NLog.Web;
 using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
 using SFA.DAS.Roatp.ProviderModeration.Web.Validators;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web;
 
@@ -21,12 +22,12 @@ public static class Program
 
         builder.AddConfigFromAzureTableStorage();
 
-        builder.Services.Configure<RouteOptions>(o=>o.LowercaseUrls = true);
+        builder.Services.Configure<RouteOptions>(o => o.LowercaseUrls = true);
 
-        builder.Services.AddControllersWithViews();
-        
+        builder.Services.AddControllersWithViews(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+
         builder.Services.RegisterConfigurations(builder.Configuration);
-        
+
         var applicationAssembly = typeof(GetProviderQuery).Assembly;
 
         builder.Services
