@@ -14,6 +14,11 @@ public static class AuthenticationServicesExtension
     {
         var authConfig = configuration.GetSection(nameof(StaffAuthenticationConfiguration)).Get<StaffAuthenticationConfiguration>();
 
+        var cookieOptions = new Action<CookieAuthenticationOptions>(options =>
+        {
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        });
+
         services
             .AddAuthentication(sharedOptions =>
             {
@@ -33,7 +38,7 @@ public static class AuthenticationServicesExtension
                     await PopulateProviderClaims(ctx.HttpContext, ctx.Principal);
                 };
             })
-            .AddCookie();
+            .AddCookie(cookieOptions);
 
         return services;
     }

@@ -30,7 +30,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                 Ukprn = ukprn,
                 LegalName = providerSearchResult.Provider.LegalName,
                 ExistingProviderDescription = providerSearchResult.Provider.MarketingInfo,
-                ProviderDescription = TempData.ContainsKey("ProviderDescription") ? (string)TempData["ProviderDescription"] : string.Empty ,
+                ProviderDescription = TempData.ContainsKey("ProviderDescription") ? (string)TempData["ProviderDescription"] : string.Empty,
                 CancelLink = Url.RouteUrl(RouteNames.GetProviderDetails, new { ukprn = ukprn })
             };
             return View(ViewPath, providerDescriptionUpdateViewModel);
@@ -56,7 +56,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             }
             
             TempData["ProviderDescription"] = submitModel.ProviderDescription;
-            return RedirectToRoute(RouteNames.GetReviewProviderDescription, new { submitModel.Ukprn, mode = ProviderDescriptionMode.Update });
+            return RedirectToRoute(RouteNames.GetReviewProviderDescription, new { submitModel.Ukprn});
         }
     }
 }

@@ -65,11 +65,34 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             tempData["ProviderDescription"] = submitModel.ProviderDescription;
             _sut.TempData = tempData;
 
-            var result = await _sut.ReviewProviderDescription(submitModel, ProviderDescriptionMode.Add);
+            var result = await _sut.ReviewProviderDescription(submitModel);
 
             var redirectResult = result as RedirectToRouteResult;
             redirectResult.Should().NotBeNull();
             redirectResult.RouteName.Should().Be(RouteNames.GetProviderDetails);
+        }
+
+        [Test]
+        public async Task ReviewProviderDescription_InValidModelStateResponseRedirectToGetProviderDescription()
+        {
+            var submitModel = new ProviderDescriptionReviewViewModel
+            {
+                Ukprn = Ukprn,
+                LegalName = LegalName,
+                ProviderDescription = ProviderDescription
+            };
+
+            var httpContext = new DefaultHttpContext();
+            var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
+            _sut.TempData = tempData;
+
+            _sut.ModelState.AddModelError("key", "message");
+
+            var result = await _sut.ReviewProviderDescription(submitModel);
+
+            var redirectResult = result as RedirectToRouteResult;
+            redirectResult.Should().NotBeNull();
+            redirectResult.RouteName.Should().Be(RouteNames.GetProviderDescription);
         }
     }
 }

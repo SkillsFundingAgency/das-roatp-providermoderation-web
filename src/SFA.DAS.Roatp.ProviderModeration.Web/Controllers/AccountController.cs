@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
-using System.Linq;
 using System.Security.Claims;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
@@ -35,7 +33,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         }
 
         [HttpGet]
-        public new IActionResult SignOut()
+        public IActionResult SignOut()
         {
             var callbackUrl = Url.Action("SignedOut", "Account", values: null, protocol: Request.Scheme);
 
