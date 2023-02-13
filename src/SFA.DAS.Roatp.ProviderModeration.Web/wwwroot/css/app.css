@@ -22,3 +22,7 @@
     color: #fff;
     margin: 0;
 }
+
+.app-preline {
+	white-space: pre-line;
+}
