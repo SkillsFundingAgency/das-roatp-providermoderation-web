@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.WsFederation;
 using SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
 using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
-using System.Diagnostics.CodeAnalysis;
-using System.Security.Claims;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
 
@@ -31,7 +31,6 @@ public static class AuthenticationServicesExtension
             {
                 options.Wtrealm = authConfig.WtRealm;
                 options.MetadataAddress = authConfig.MetadataAddress;
-                options.CallbackPath = "/home";
                 options.TokenValidationParameters.RoleClaimType = Roles.RoleClaimType;
                 options.Events.OnSecurityTokenValidated = async (ctx) =>
                 {
