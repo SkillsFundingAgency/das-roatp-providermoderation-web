@@ -18,7 +18,7 @@
             <input type="hidden" asp-for="@Model.LegalName" />
             <input type="hidden" asp-for="@Model.ExistingProviderDescription" />
             <h4 class="govuk-heading-s">The current live description is as follows:</h4>
-            <p>@Model.ExistingProviderDescription</p>
+            <p class="app-preline">@Model.ExistingProviderDescription</p>
             <div esfa-validation-marker-for="ProviderDescription" class="govuk-form-group">
                 <h4 class="govuk-heading-s">To update this , please copy and paste the updated description:</h4>
                 <span asp-validation-for="ProviderDescription" class="govuk-error-message"></span>

@@ -18,9 +18,7 @@
             <input type="hidden" asp-for="@Model.LegalName" />
             <input type="hidden" asp-for="@Model.ProviderDescription" />
             <div esfa-validation-marker-for="ProviderDescription" class="govuk-form-group">
-            <label class="govuk-label" asp-for="ProviderDescription">
-                @Model.ProviderDescription
-            </label>
+                <p class="app-preline">@Model.ProviderDescription</p>
             </div>
             <div class="govuk-button-group">
                 <button id="submit" type="submit" class="govuk-button">Submit</button>
