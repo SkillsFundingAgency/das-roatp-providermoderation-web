@@ -28,7 +28,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderDesc
         [Test]
         public void WhenTooLong_ProducesValidatonError()
         {
-            string providerDescription = new string('*', 751);
+            string providerDescription = new string('*', ProviderDescriptionSubmitModelValidator.ProviderDescriptionMaximumLength+1);
             var sut = new ProviderDescriptionSubmitModelValidator();
 
             var submitModel = new ProviderDescriptionSubmitModel()
@@ -44,7 +44,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderDesc
         [Test]
         public void WhenValid_ShouldNotHaveErrorForProviderDescription()
         {
-            string providerDescription = new string('*', 750);
+            string providerDescription = new string('*', ProviderDescriptionSubmitModelValidator.ProviderDescriptionMaximumLength);
             var sut = new ProviderDescriptionSubmitModelValidator();
 
             var submitModel = new ProviderDescriptionSubmitModel()
@@ -56,6 +56,39 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Validators.ProviderDesc
 
             result.ShouldNotHaveValidationErrorFor(c => c.ProviderDescription);
         }
+
+        [Test]
+        public void WhenValid_ShouldNotHaveErrorForProviderDescriptionWhenCarriageReturnAdded()
+        {
+            string providerDescription = new string('*', ProviderDescriptionSubmitModelValidator.ProviderDescriptionMaximumLength) + "\r";
+            var sut = new ProviderDescriptionSubmitModelValidator();
+
+            var submitModel = new ProviderDescriptionSubmitModel()
+            {
+                ProviderDescription = providerDescription
+            };
+
+            var result = sut.TestValidate(submitModel);
+
+            result.ShouldNotHaveValidationErrorFor(c => c.ProviderDescription);
+        }
+
+        [Test]
+        public void WhenValid_ShouldNotHaveErrorForProviderDescriptionWhenLineFeedAdded()
+        {
+            string providerDescription = new string('*', ProviderDescriptionSubmitModelValidator.ProviderDescriptionMaximumLength) + "\n";
+            var sut = new ProviderDescriptionSubmitModelValidator();
+
+            var submitModel = new ProviderDescriptionSubmitModel()
+            {
+                ProviderDescription = providerDescription
+            };
+
+            var result = sut.TestValidate(submitModel);
+
+            result.ShouldNotHaveValidationErrorFor(c => c.ProviderDescription);
+        }
+
 
         [TestCase("@")]
         [TestCase("#")]
