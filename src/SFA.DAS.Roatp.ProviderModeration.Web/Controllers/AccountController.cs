@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Extensions.Options;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
@@ -14,10 +15,10 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly ApplicationConfiguration _applicationConfiguration;
 
-        public AccountController(ILogger<AccountController> logger, ApplicationConfiguration applicationConfiguration)
+        public AccountController(ILogger<AccountController> logger, IOptions<ApplicationConfiguration> applicationConfiguration)
         {
             _logger = logger;
-            _applicationConfiguration = applicationConfiguration;
+            _applicationConfiguration = applicationConfiguration.Value;
         }
 
         [HttpGet]

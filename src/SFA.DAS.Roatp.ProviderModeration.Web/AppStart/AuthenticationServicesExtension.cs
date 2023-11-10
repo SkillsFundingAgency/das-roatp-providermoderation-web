@@ -14,7 +14,7 @@ public static class AuthenticationServicesExtension
 {
     public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        bool.TryParse(configuration["UseDfeSignIn"],out var useDfeSignIn);
+        bool.TryParse(configuration["ApplicationConfiguration:UseDfeSignIn"],out var useDfeSignIn);
         if (useDfeSignIn)
         {
             services.AddAndConfigureDfESignInAuthentication(configuration,

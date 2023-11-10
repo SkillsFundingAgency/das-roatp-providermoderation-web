@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
@@ -15,14 +16,14 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers
     public class AccountControllerTests
     {
         private AccountController _controller;
-        private Mock<ApplicationConfiguration> _configurationMock;
+        private Mock<IOptions<ApplicationConfiguration>> _configurationMock;
 
         [SetUp]
         public void Setup()
         {
-            _configurationMock = new Mock<ApplicationConfiguration>();
-            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(true);
-            _configurationMock.Setup(x => x.DfESignInServiceHelpUrl).Returns("test");
+            _configurationMock = new Mock<IOptions<ApplicationConfiguration>>();
+            _configurationMock.Setup(x => x.Value.UseDfeSignIn).Returns(true);
+            _configurationMock.Setup(x => x.Value.DfESignInServiceHelpUrl).Returns("test");
             _controller = new AccountController(Mock.Of<ILogger<AccountController>>(), _configurationMock.Object)
             {
                 ControllerContext = MockedControllerContext.Setup(),
@@ -33,7 +34,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers
         [Test]
         public void SignIn_returns_expected_ChallengeResult()
         {
-            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(false);
+            _configurationMock.Setup(x => x.Value.UseDfeSignIn).Returns(false);
             
             var result = _controller.SignIn() as ChallengeResult;
 
@@ -45,7 +46,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers
         [Test]
         public void SignIn_returns_expected_ChallengeResult_DfeSignIn()
         {
-            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(true);
+            _configurationMock.Setup(x => x.Value.UseDfeSignIn).Returns(true);
             
             var result = _controller.SignIn() as ChallengeResult;
 
@@ -66,7 +67,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers
         [Test]
         public void SignOut_returns_expected_SignOutResult()
         {
-            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(false);
+            _configurationMock.Setup(x => x.Value.UseDfeSignIn).Returns(false);
             
             var result = _controller.SignOut() as SignOutResult;
 
@@ -79,7 +80,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers
         [Test]
         public void SignOut_returns_expected_SignOutResult_DfeSignIn()
         {
-            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(true);
+            _configurationMock.Setup(x => x.Value.UseDfeSignIn).Returns(true);
             
             var result = _controller.SignOut() as SignOutResult;
 
