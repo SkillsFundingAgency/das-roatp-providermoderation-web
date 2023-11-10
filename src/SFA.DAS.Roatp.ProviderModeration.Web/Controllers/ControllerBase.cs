@@ -8,7 +8,19 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
     [ExcludeFromCodeCoverage]
     public abstract class ControllerBase : Controller
     {
-        protected string UserId => User.FindFirstValue(ProviderClaims.UserId);
-        protected string UserDisplayName => string.Concat(User.FindFirstValue(ProviderClaims.Givenname), " ", User.FindFirstValue(ProviderClaims.Surname));
+        protected string UserId => User.FindFirstValue(ProviderClaims.UserId) ?? User.FindFirstValue("email");
+        protected string UserDisplayName
+        {
+            get
+            {
+                if (User.FindFirstValue(ProviderClaims.Givenname) == null)
+                {
+                    return User.FindFirstValue(ProviderClaims.DisplayName);
+                }
+                
+                return string.Concat(User.FindFirstValue(ProviderClaims.Givenname), " ",
+                    User.FindFirstValue(ProviderClaims.Surname));
+            }
+        }
     }
 }
