@@ -18,7 +18,7 @@ public static class AuthenticationServicesExtension
         if (useDfeSignIn)
         {
             services.AddAndConfigureDfESignInAuthentication(configuration,
-                $"{typeof(AuthenticationServicesExtension).Assembly.GetName().Name}.Auth",
+                "SFA.DAS.AdminService.Web.Auth",
                 typeof(CustomServiceRole),
                 ClientName.RoatpServiceAdmin,
                 "/SignOut",
