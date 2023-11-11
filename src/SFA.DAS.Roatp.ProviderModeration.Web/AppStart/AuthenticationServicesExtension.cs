@@ -20,7 +20,7 @@ public static class AuthenticationServicesExtension
             services.AddAndConfigureDfESignInAuthentication(configuration,
                 $"{typeof(AuthenticationServicesExtension).Assembly.GetName().Name}.Auth",
                 typeof(CustomServiceRole),
-                ClientName.ServiceAdmin,
+                ClientName.RoatpServiceAdmin,
                 "/SignOut",
                 "");
             return services;
