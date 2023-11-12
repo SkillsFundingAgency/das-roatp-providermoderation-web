@@ -44,6 +44,7 @@ public static class Program
             .AddServiceRegistrations(builder.Configuration);
 
         builder.Services.AddHealthChecks();
+        builder.Services.AddDataProtection(builder.Configuration, builder.Environment);
 
         //Add services above
         var app = builder.Build();
