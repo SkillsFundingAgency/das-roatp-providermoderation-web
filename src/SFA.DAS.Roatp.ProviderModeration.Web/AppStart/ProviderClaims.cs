@@ -8,5 +8,6 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.AppStart
         public static readonly string UserId = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn";
         public static readonly string Surname = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname";
         public static readonly string Givenname = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname";
+        public static readonly string DisplayName = "http://schemas.portal.com/displayname";
     }
 }

@@ -2,6 +2,8 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.WsFederation;
+using SFA.DAS.DfESignIn.Auth.AppStart;
+using SFA.DAS.DfESignIn.Auth.Enums;
 using SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
 using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
 
@@ -12,6 +14,18 @@ public static class AuthenticationServicesExtension
 {
     public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
+        bool.TryParse(configuration["ApplicationConfiguration:UseDfeSignIn"],out var useDfeSignIn);
+        if (useDfeSignIn)
+        {
+            services.AddAndConfigureDfESignInAuthentication(configuration,
+                "SFA.DAS.AdminService.Web.Auth",
+                typeof(CustomServiceRole),
+                ClientName.RoatpServiceAdmin,
+                "/SignOut",
+                "");
+            return services;
+        }
+        
         var authConfig = configuration.GetSection(nameof(StaffAuthenticationConfiguration)).Get<StaffAuthenticationConfiguration>();
 
         var cookieOptions = new Action<CookieAuthenticationOptions>(options =>

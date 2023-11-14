@@ -4,26 +4,34 @@ using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Roatp.ProviderModeration.Web.Configuration;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Extensions.Options;
+using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
 {
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;
+        private readonly ApplicationConfiguration _applicationConfiguration;
 
-        public AccountController(ILogger<AccountController> logger)
+        public AccountController(ILogger<AccountController> logger, IOptions<ApplicationConfiguration> applicationConfiguration)
         {
             _logger = logger;
+            _applicationConfiguration = applicationConfiguration.Value;
         }
 
         [HttpGet]
         public IActionResult SignIn()
         {
             _logger.LogInformation("Start of Sign In");
+            var challengeScheme = _applicationConfiguration.UseDfeSignIn
+                ? OpenIdConnectDefaults.AuthenticationScheme
+                : WsFederationDefaults.AuthenticationScheme;
             var redirectUrl = Url.Action("PostSignIn", "Account");
             return Challenge(
                 new AuthenticationProperties { RedirectUri = redirectUrl },
-                WsFederationDefaults.AuthenticationScheme);
+                challengeScheme);
         }
 
         [HttpGet]
@@ -42,10 +50,18 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                 Response.Cookies.Delete(cookie);
             }
 
+            var authScheme = _applicationConfiguration.UseDfeSignIn
+                ? OpenIdConnectDefaults.AuthenticationScheme
+                : WsFederationDefaults.AuthenticationScheme;
+
             return SignOut(
-                new AuthenticationProperties { RedirectUri = callbackUrl },
+                new AuthenticationProperties
+                {
+                    RedirectUri = callbackUrl,
+                    AllowRefresh = true
+                },
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                WsFederationDefaults.AuthenticationScheme);
+                authScheme);
         }
 
         [HttpGet]
@@ -64,8 +80,14 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
 
                 _logger.LogError("AccessDenied - User '{userName}' does not have a valid role. They have the following roles: {roles}", userName, string.Join(",", roles));
             }
+            
+            var model = new Error403ViewModel
+            {
+                UseDfESignIn = _applicationConfiguration.UseDfeSignIn,
+                HelpPageLink = _applicationConfiguration.DfESignInServiceHelpUrl
+            };
 
-            return View("AccessDenied");
+            return View("AccessDenied",model);
         }
     }
 }
