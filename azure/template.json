@@ -245,6 +245,10 @@
         "AppServiceName": {
             "type": "string",
             "value": "[variables('appServiceName')]"
+        },
+        "resourceNamePrefix": {
+            "type": "string",
+            "value": "[variables('resourceNamePrefix')]"
         }
     }
 }
