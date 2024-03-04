@@ -6,6 +6,8 @@ using SFA.DAS.Roatp.ProviderModeration.Web.Infrastructure;
 using SFA.DAS.Roatp.ProviderModeration.Web.Models;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers;
+
+[AllowAnonymous]
 public class ErrorController : Controller
 {
     private readonly ILogger<ErrorController> _logger;
@@ -15,7 +17,6 @@ public class ErrorController : Controller
         _logger = logger;
     }
 
-    [AllowAnonymous]
     [Route("Error/{statuscode}")]
     public IActionResult HttpStatusCodeHandler(int statusCode)
     {
@@ -33,7 +34,6 @@ public class ErrorController : Controller
         }
     }
 
-    [AllowAnonymous]
     [Route("Error")]
     public IActionResult ErrorInService()
     {
