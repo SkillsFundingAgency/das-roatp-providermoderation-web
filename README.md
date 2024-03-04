@@ -6,6 +6,8 @@
 
 [![Build Status](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_apis/build/status/SkillsFundingAgency_das-roatp-providermoderation-web?branchName=main)](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_build/latest?definitionId=SkillsFundingAgency_das-roatp-providermoderation-web&branchName=min)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=SkillsFundingAgency_das-roatp-providermoderation-web&metric=alert_status)](https://sonarcloud.io/dashboard?id=SkillsFundingAgency_das-roatp-providermoderation-web)
+[![Confluence Page](https://img.shields.io/badge/Confluence-Project-blue)](https://skillsfundingagency.atlassian.net/wiki/spaces/NDL/pages/3852894209/AAN+Apprentice+Solution+Architecture)
+[![License](https://img.shields.io/badge/license-MIT-lightgrey.svg?longCache=true&style=flat-square)](https://en.wikipedia.org/wiki/MIT_License)
 
 
 ## About
@@ -33,9 +35,34 @@ It interacts with an outer api (https://github.com/SkillsFundingAgency/das-apim-
   - RowKey: SFA.DAS.Roatp.ProviderModeration.Web_1.0
   - Data: {The contents of the local config json file}
   
+- In the web project, if not exist already, add `AppSettings.Development.json` file with following content:
+```json  
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConfigurationStorageConnectionString": "UseDevelopmentStorage=true;",
+  "ConfigNames": "SFA.DAS.Roatp.ProviderModeration.Web,SFA.DAS.Provider.DfeSignIn",
+  "EnvironmentName": "LOCAL",
+  "cdn": {
+    "url": "https://das-prd-frnt-end.azureedge.net"
+  }
+}
+```
+  
 You will also need to setup the roatp outer api and have it running (see https://github.com/SkillsFundingAgency/das-apim-endpoints/ and go to the section for 'Provider Moderation')
 
 Open the solution with Visual Studio, and run the project SFA.DAS.Roatp.ProviderModeration.Web, running under process 'SFA.DAS.Roatp.ProviderModeration.Web' (not IIS)
+
+## Technologies
+* .NetCore 8.0
+* NUnit
+* Moq
+* FluentAssertions
 
 
   

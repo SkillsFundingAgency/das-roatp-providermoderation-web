@@ -1,7 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
+using FluentValidation;
 using FluentValidation.AspNetCore;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 using NLog.Web;
 using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
@@ -16,7 +17,7 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        NLogBuilder.ConfigureNLog("nlog.config");
+        LogManager.Setup().LoadConfigurationFromFile("nlog.config");
 
         builder.Host.UseNLog();
 
@@ -28,18 +29,14 @@ public static class Program
 
         builder.Services.RegisterConfigurations(builder.Configuration);
 
-        var applicationAssembly = typeof(GetProviderQuery).Assembly;
-
         builder.Services
-        .AddFluentValidation(fv =>
-         {
-             fv.RegisterValidatorsFromAssemblyContaining<ProviderSearchSubmitModelValidator>();
-             fv.ImplicitlyValidateChildProperties = true;
-         });
+            .AddFluentValidationAutoValidation()
+            .AddFluentValidationClientsideAdapters()
+            .AddValidatorsFromAssemblyContaining<ProviderSearchSubmitModelValidator>();
 
         builder.Services
             .AddApplicationInsightsTelemetry()
-            .AddMediatR(applicationAssembly)
+            .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetProviderQuery).Assembly))
             .AddAuthentication(builder.Configuration)
             .AddServiceRegistrations(builder.Configuration);
 
@@ -62,6 +59,27 @@ public static class Program
             app.UseHsts();
         }
 
+        app.Use(async (context, next) =>
+        {
+            if (context.Response.Headers.ContainsKey("X-Frame-Options"))
+            {
+                context.Response.Headers.Remove("X-Frame-Options");
+            }
+
+            context.Response.Headers!.Append("X-Frame-Options", "SAMEORIGIN");
+
+            await next();
+
+            if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
+            {
+                //Re-execute the request so the user gets the error page
+                var originalPath = context.Request.Path.Value;
+                context.Items["originalPath"] = originalPath;
+                context.Request.Path = "/error/404";
+                await next();
+            }
+        });
+
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
@@ -73,12 +91,9 @@ public static class Program
         app.UseAuthorization();
         app.UseHealthChecks();
 
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-        });
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
 
         app.Run();
     }
