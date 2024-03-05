@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.Roatp.ProviderModeration.Application.Providers.Commands.UpdateProviderDescription
 {
-    public class UpdateProviderDescriptionCommand : IRequest
+    public class UpdateProviderDescriptionCommand : IRequest<Unit>
     {
         public int Ukprn { get; set; }
         public string UserId { get; set; }
