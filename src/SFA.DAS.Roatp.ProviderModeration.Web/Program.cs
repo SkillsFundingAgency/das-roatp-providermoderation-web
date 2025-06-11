@@ -2,8 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
-using NLog.Web;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
 using SFA.DAS.Roatp.ProviderModeration.Web.Validators;
@@ -17,10 +16,6 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        LogManager.Setup().LoadConfigurationFromFile("nlog.config");
-
-        builder.Host.UseNLog();
-
         builder.AddConfigFromAzureTableStorage();
 
         builder.Services.Configure<RouteOptions>(o => o.LowercaseUrls = true);
@@ -33,6 +28,12 @@ public static class Program
             .AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters()
             .AddValidatorsFromAssemblyContaining<ProviderSearchSubmitModelValidator>();
+
+        builder.Services.AddLogging(loggingBuilder =>
+        {
+            loggingBuilder.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
+            loggingBuilder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
+        });
 
         builder.Services
             .AddApplicationInsightsTelemetry()
