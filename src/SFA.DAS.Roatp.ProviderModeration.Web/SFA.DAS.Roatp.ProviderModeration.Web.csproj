@@ -12,7 +12,6 @@
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.WsFederation" Version="8.0.2" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.4.0" />
-    <PackageReference Include="SFA.DAS.AdminService.Common" Version="0.1.134" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
     <PackageReference Include="SFA.DAS.DfESignIn.Auth" Version="17.1.76" />
     <PackageReference Include="SFA.DAS.Provider.Shared.UI" Version="2.0.48" />
