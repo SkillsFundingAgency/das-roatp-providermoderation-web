@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Roatp.ProviderModeration.Application.Providers.Queries.GetProvider;
 using SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
@@ -22,10 +23,13 @@ public static class Program
         builder.Services.RegisterConfigurations(builder.Configuration);
 
         builder.Services
-            .AddApplicationInsightsTelemetry()
             .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetProviderQuery).Assembly))
             .AddAuthentication(builder.Configuration)
             .AddServiceRegistrations(builder.Configuration);
+
+        builder.Services.AddOpenTelemetryRegistration(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]!);
+
+        builder.Services.AddValidatorsFromAssembly(typeof(ProviderDescriptionReviewModelValidator).Assembly);
 
         builder.Services.AddHealthChecks();
         builder.Services.AddDataProtection(builder.Configuration, builder.Environment);
