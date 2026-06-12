@@ -1,8 +1,10 @@
-﻿using FluentValidation.Results;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class ModelStateExtensions
 {
     public static void AddValidationErrors(this ModelStateDictionary modelState, IEnumerable<ValidationFailure> errors)

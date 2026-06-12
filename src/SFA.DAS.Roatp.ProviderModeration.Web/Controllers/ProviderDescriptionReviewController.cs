@@ -81,7 +81,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                 return RedirectToRoute(RouteNames.GetProviderDescription);
             }
 
-            _logger.LogInformation("Provider description updating for {ukprn}", submitModel.Ukprn);
+            _logger.LogInformation("Provider description updating for {Ukprn}", submitModel.Ukprn);
             TempData.Remove("ProviderDescription");
 
             var command = new UpdateProviderDescriptionCommand

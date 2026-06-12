@@ -78,7 +78,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
                 var userName = HttpContext.User.Identity.Name ?? HttpContext.User.FindFirstValue(ClaimTypes.Upn);
                 var roles = HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Role || c.Type == Roles.RoleClaimType).Select(c => c.Value);
 
-                _logger.LogError("AccessDenied - User '{userName}' does not have a valid role. They have the following roles: {roles}", userName, string.Join(",", roles));
+                _logger.LogError("AccessDenied - User '{UserName}' does not have a valid role. They have the following roles: {Roles}", userName, string.Join(",", roles));
             }
 
             var model = new Error403ViewModel

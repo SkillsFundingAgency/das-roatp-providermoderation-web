@@ -36,7 +36,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         [Route("providers/provider-description", Name = RouteNames.PostProviderDescription)]
         public async Task<IActionResult> GetProviderDescription(ProviderSearchSubmitModel submitModel)
         {
-            _logger.LogInformation("Provider description gathering for {ukprn}", submitModel.Ukprn);
+            _logger.LogInformation("Provider description gathering for {Ukprn}", submitModel.Ukprn);
 
             var validatedModel = await _validator.ValidateAsync(submitModel);
 

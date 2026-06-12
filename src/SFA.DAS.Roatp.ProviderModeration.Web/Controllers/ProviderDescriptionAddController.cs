@@ -43,7 +43,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         [Route("providers/{ukprn}/add-provider-description", Name = RouteNames.PostAddProviderDescription)]
         public IActionResult AddProviderDescription(ProviderDescriptionSubmitModel submitModel)
         {
-            _logger.LogInformation("Provider description gathering for {ukprn}", submitModel.Ukprn);
+            _logger.LogInformation("Provider description gathering for {Ukprn}", submitModel.Ukprn);
 
             var validatedModel = _validator.Validate(submitModel);
 

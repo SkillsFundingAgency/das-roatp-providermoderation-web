@@ -44,7 +44,7 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
         [Route("providers/{ukprn}/update-provider-description", Name = RouteNames.PostUpdateProviderDescription)]
         public IActionResult UpdateProviderDescription(ProviderDescriptionSubmitModel submitModel)
         {
-            _logger.LogInformation("Provider description updating for {ukprn}", submitModel.Ukprn);
+            _logger.LogInformation("Provider description updating for {Ukprn}", submitModel.Ukprn);
 
             var validatedModel = _validator.Validate(submitModel);
 

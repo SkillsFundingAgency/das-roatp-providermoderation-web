@@ -1,7 +1,9 @@
-﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
+﻿using System.Diagnostics.CodeAnalysis;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 
 namespace SFA.DAS.Roatp.ProviderModeration.Web.AppStart;
 
+[ExcludeFromCodeCoverage]
 internal static class ServiceCollectionExtensions
 {
     public static void AddOpenTelemetryRegistration(this IServiceCollection services, string appInsightsConnectionString)
