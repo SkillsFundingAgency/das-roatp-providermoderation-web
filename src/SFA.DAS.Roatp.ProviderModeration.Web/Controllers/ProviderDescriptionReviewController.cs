@@ -74,7 +74,9 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.Controllers
             var validatedModel = await _validator.ValidateAsync(submitModel);
 
             if (!validatedModel.IsValid)
+            {
                 ModelState.AddValidationErrors(validatedModel.Errors);
+            }
 
             if (!ModelState.IsValid)
             {
