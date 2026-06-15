@@ -111,7 +111,13 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderSea
         [Test]
         public async Task ProviderController_GetProviderDescription_ModelStateErrorReturnSameView()
         {
-            _sut.ModelState.AddModelError("ProviderNotMainProvider", "ErrorMessage");
+            var failedValidationResult = new ValidationResult
+            {
+                Errors = [new ValidationFailure("ProviderNotMainProvider", "ErrorMessage")]
+            };
+
+            _validatorMock.Setup(x => x.ValidateAsync(It.IsAny<ProviderSearchSubmitModel>()))
+                .ReturnsAsync(failedValidationResult);
 
             var model = new ProviderSearchSubmitModel
             {

@@ -94,7 +94,12 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
             var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
             _sut.TempData = tempData;
 
-            _sut.ModelState.AddModelError("key", "message");
+            var failedValidationResult = new ValidationResult
+            {
+                Errors = [new ValidationFailure("key", "message")]
+            };
+            _validatorMock.Setup(x => x.ValidateAsync(It.IsAny<ProviderDescriptionReviewViewModel>()))
+                .ReturnsAsync(failedValidationResult);
 
             var result = await _sut.ReviewProviderDescription(submitModel);
 

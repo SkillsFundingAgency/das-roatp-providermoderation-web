@@ -78,7 +78,13 @@ namespace SFA.DAS.Roatp.ProviderModeration.Web.UnitTests.Controllers.ProviderDes
         [Test]
         public void ProviderDescriptionUpdateController_UpdateProviderDescription_ModelStateErrorReturnSameView()
         {
-            _sut.ModelState.AddModelError("ProviderDescription", "ErrorMessageEmptyString");
+            var failedValidationResult = new ValidationResult
+            {
+                Errors = [new ValidationFailure("ProviderDescription", "ErrorMessageEmptyString")]
+            };
+
+            _validatorMock.Setup(x => x.Validate(It.IsAny<ProviderDescriptionSubmitModel>()))
+                .Returns(failedValidationResult);
 
             var submitModel = new ProviderDescriptionSubmitModel
             {
