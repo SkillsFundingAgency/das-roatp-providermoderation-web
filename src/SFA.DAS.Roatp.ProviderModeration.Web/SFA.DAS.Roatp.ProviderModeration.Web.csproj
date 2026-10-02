@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.19.1" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="17.1.165" />
     <PackageReference Include="SFA.DAS.DfESignIn.Auth" Version="17.1.165" />
-    <PackageReference Include="SFA.DAS.Provider.Shared.UI" Version="2.0.57" />
+    <PackageReference Include="SFA.DAS.Provider.Shared.UI" Version="2.0.59" />
     <PackageReference Include="SFA.DAS.ProviderUrlHelper" Version="17267.0.559" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="10.0.8" />
   </ItemGroup>
